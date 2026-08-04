@@ -1204,3 +1204,62 @@
     color: #2e7d32;
     font-weight: bold;
 }
+
+
+/* ==========================
+   DASHBOARD HEADER
+========================== */
+
+.dashboard-header {
+    margin-bottom: 35px;
+}
+
+.dashboard-header h1 {
+    font-size: 34px;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.dashboard-header h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #263238;
+}
+
+.dashboard-header p {
+    color: var(--soft-text);
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 18px;
+}
+
+.dashboard-card {
+    padding: 28px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, .65);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+    transition: .3s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-6px);
+}
+
+.dashboard-card strong {
+    display: block;
+    font-size: 38px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.dashboard-card span {
+    color: var(--soft-text);
+    font-size: 15px;
+}
