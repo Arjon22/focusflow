@@ -8,6 +8,7 @@ import TaskStats from "./components/TaskStats";
 import TaskFilter from "./components/TaskFilter";
 import SearchBar from "./components/SearchBar";
 import TaskSort from "./components/TaskSort";
+import DateFilter from "./components/DateFilter";
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -29,6 +30,7 @@ function App() {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("due-date");
+  const [searchDate, setSearchDate] = useState("");
 
   const handleAddTask = (taskTitle, priority, dueDate) => {
     const trimmedTitle = taskTitle.trim();
@@ -158,11 +160,17 @@ function App() {
 
       return true;
     })
-    .filter((task) =>
-      task.title
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    );
+    .filter((task) => {
+  const matchesSearch =
+    task.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+  const matchesDate =
+    !searchDate || task.dueDate === searchDate;
+
+  return matchesSearch && matchesDate;
+});
 const compareDueDate = (a, b) => {
   if (!a.dueDate && !b.dueDate) return 0;
   if (!a.dueDate) return 1;
@@ -283,6 +291,10 @@ sortedTasks.sort((a, b) => {
           search={search}
           setSearch={setSearch}
         />
+        <DateFilter
+  searchDate={searchDate}
+  setSearchDate={setSearchDate}
+/>
 
         <TaskSort
           sortBy={sortBy}
