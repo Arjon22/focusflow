@@ -667,3 +667,38 @@
     font-size: 12px;
     font-weight: 600;
 }
+
+
+/* ==========================
+   TASK SORT
+========================== */
+
+.task-sort {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.task-sort label {
+    color: var(--soft-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.task-sort select {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.task-sort select:focus {
+    box-shadow: 0 0 0 3px rgba(255, 183, 197, 0.35);
+}
