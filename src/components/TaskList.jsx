@@ -36,11 +36,11 @@ function TaskList({
       {tasks.map((task) => (
 
         <li
-          className={`task-card ${
-            task.completed ? "completed" : ""
-          }`}
-          key={task.id}
-        >
+  className={`task-card ${
+    task.completed ? "completed" : ""
+  } fade-in`}
+  key={task.id}
+>
 
           <div className="task-main">
 
