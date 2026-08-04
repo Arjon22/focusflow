@@ -11,13 +11,20 @@ function App() {
   const [tasks, setTasks] = useState(() => {
   const savedTasks = localStorage.getItem("tasks");
 
-  return savedTasks ? JSON.parse(savedTasks) : [];
+  if (!savedTasks) {
+    return [];
+  }
+
+  return JSON.parse(savedTasks).map((task) => ({
+    ...task,
+    priority: task.priority || "medium",
+  }));
 });
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingText, setEditingText] = useState("");
   const [filter, setFilter] = useState("all");
 
-  const handleAddTask = (taskTitle) => {
+  const handleAddTask = (taskTitle, priority) => {
   const trimmedTitle = taskTitle.trim();
 
   if (!trimmedTitle) {
@@ -37,11 +44,11 @@ function App() {
   }
 
   const newTask = {
-    id: Date.now(),
-    title: trimmedTitle,
-    completed: false,
-  };
-
+  id: Date.now(),
+  title: trimmedTitle,
+  completed: false,
+  priority: priority,
+};
   setTasks([...tasks, newTask]);
 };
 const handleEditClick = (id) => {
