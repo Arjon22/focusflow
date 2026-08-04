@@ -6,17 +6,14 @@ import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Calendar from "./pages/Calendar";
 import Settings from "./pages/Settings";
-import Header from "./components/Header";
-import TaskForm from "./components/TaskForm";
-import TaskList from "./components/TaskList";
-import "./App.css";
-import Leaves from "./components/Leaves";
-import TaskStats from "./components/TaskStats";
-import TaskFilter from "./components/TaskFilter";
-import SearchBar from "./components/SearchBar";
-import TaskSort from "./components/TaskSort";
-import DateFilter from "./components/DateFilter";
+
 import Navbar from "./components/Navbar";
+import Leaves from "./components/Leaves";
+
+import "./styles/header.css";
+import "./styles/layout.css";
+import "./styles/task.css";
+import "./styles/dashboard.css";
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -305,56 +302,32 @@ sortedTasks.sort((a, b) => {
 
 
       <Route
-        path="/tasks"
-        element={
-          <div className="app">
-
-            <Header />
-
-            <TaskForm
-              onAddTask={handleAddTask}
-            />
-
-
-            <TaskStats
-              tasks={tasks}
-              onDeleteAllTasks={handleDeleteAllTasks}
-            />
-
-
-            <SearchBar
-              search={search}
-              setSearch={setSearch}
-            />
-
-
-            <TaskSort
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-            />
-
-
-            <TaskFilter
-              filter={filter}
-              setFilter={setFilter}
-            />
-
-
-            <TaskList
-              tasks={sortedTasks}
-              onToggleTask={handleToggleTask}
-              onEditClick={handleEditClick}
-              editingTaskId={editingTaskId}
-              editingText={editingText}
-              setEditingText={setEditingText}
-              onSaveEdit={handleSaveEdit}
-              onDeleteTask={handleDeleteTask}
-              onCancelEdit={handleCancelEdit}
-            />
-
-          </div>
-        }
-      />
+  path="/tasks"
+  element={
+    <Tasks
+      tasks={sortedTasks}
+      allTasks={tasks}
+      onAddTask={handleAddTask}
+      onToggleTask={handleToggleTask}
+      onEditClick={handleEditClick}
+      editingTaskId={editingTaskId}
+      editingText={editingText}
+      setEditingText={setEditingText}
+      onSaveEdit={handleSaveEdit}
+      onDeleteTask={handleDeleteTask}
+      onCancelEdit={handleCancelEdit}
+      onDeleteAllTasks={handleDeleteAllTasks}
+      filter={filter}
+      setFilter={setFilter}
+      search={search}
+      setSearch={setSearch}
+      sortBy={sortBy}
+      setSortBy={setSortBy}
+      searchDate={searchDate}
+      setSearchDate={setSearchDate}
+    />
+  }
+/>
 
 
       <Route

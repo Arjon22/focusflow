@@ -1,66 +1,87 @@
-function TaskStats({ tasks, onDeleteAllTasks }) {
+function TaskStats({
+  tasks = [],
+  onDeleteAllTasks
+}) {
 
-  const totalTasks = tasks.length;
+  const total = tasks.length;
 
-  const completedTasks = tasks.filter(
-    (task) => task.completed
+  const completed = tasks.filter(
+    task => task.completed
   ).length;
 
-  const remainingTasks = totalTasks - completedTasks;
+  const remaining = total - completed;
+
 
   const progress =
-    totalTasks === 0
+    total === 0
       ? 0
-      : Math.round((completedTasks / totalTasks) * 100);
+      : Math.round(
+          (completed / total) * 100
+        );
 
 
   return (
-    <div className="task-stats-wrapper">
+
+    <div className="task-stats-container">
 
 
-      <div className="task-stats">
+      <div className="stats-cards">
 
-        <div>
-          <strong>{totalTasks}</strong>
-          <span>Total</span>
+
+        <div className="stat-card">
+          <strong>
+            {total}
+          </strong>
+
+          <span>
+            Total
+          </span>
         </div>
 
 
-        <div>
-          <strong>{completedTasks}</strong>
-          <span>Completed</span>
+
+        <div className="stat-card">
+          <strong>
+            {completed}
+          </strong>
+
+          <span>
+            Completed
+          </span>
         </div>
 
 
-        <div>
-          <strong>{remainingTasks}</strong>
-          <span>Remaining</span>
+
+        <div className="stat-card">
+          <strong>
+            {remaining}
+          </strong>
+
+          <span>
+            Remaining
+          </span>
         </div>
 
-
-        <button
-          className="delete-all-btn"
-          onClick={onDeleteAllTasks}
-        >
-          Delete All Tasks
-        </button>
 
       </div>
 
 
 
-      <div className="progress-container">
+      <button
+        className="delete-all-btn"
+        onClick={onDeleteAllTasks}
+      >
+        🗑 Delete All Tasks
+      </button>
 
-        <div className="progress-header">
-          <span>
-            Focus Progress
-          </span>
 
-          <strong>
-            {progress}%
-          </strong>
 
-        </div>
+      <div className="focus-progress">
+
+
+        <h3>
+          Focus Progress
+        </h3>
 
 
         <div className="progress-bar">
@@ -68,24 +89,29 @@ function TaskStats({ tasks, onDeleteAllTasks }) {
           <div
             className="progress-fill"
             style={{
-              width: `${progress}%`
+              width:`${progress}%`
             }}
-          >
-          </div>
+          />
 
         </div>
 
 
         <p>
-          {completedTasks} completed out of {totalTasks} tasks
+          {progress}% 
+          <br/>
+          {completed} completed out of {total} tasks
         </p>
 
 
       </div>
 
 
+
     </div>
+
   );
+
 }
+
 
 export default TaskStats;

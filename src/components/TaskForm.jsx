@@ -19,7 +19,13 @@ function TaskForm({ onAddTask }) {
   };
 
   return (
-    <form className="task-form" onSubmit={handleSubmit}>
+
+  <div className="task-form">
+
+
+    <form
+ onSubmit={handleSubmit}
+>
 
       <input
         className="task-input"
@@ -31,35 +37,38 @@ function TaskForm({ onAddTask }) {
         }
       />
 
-
       <div className="priority-wrapper">
 
         <button
           type="button"
           className={`priority-option high ${
-            priority === "high" ? "selected" : ""
+            priority === "high"
+              ? "selected"
+              : ""
           }`}
           onClick={() => setPriority("high")}
         >
           🔴 High
         </button>
 
-
         <button
           type="button"
           className={`priority-option medium ${
-            priority === "medium" ? "selected" : ""
+            priority === "medium"
+              ? "selected"
+              : ""
           }`}
           onClick={() => setPriority("medium")}
         >
           🟡 Medium
         </button>
 
-
         <button
           type="button"
           className={`priority-option low ${
-            priority === "low" ? "selected" : ""
+            priority === "low"
+              ? "selected"
+              : ""
           }`}
           onClick={() => setPriority("low")}
         >
@@ -68,30 +77,29 @@ function TaskForm({ onAddTask }) {
 
       </div>
 
-
       <div
-  className="date-picker"
-  onClick={() => dateRef.current.showPicker()}
->
+        className="date-picker"
+        onClick={() => dateRef.current.showPicker()}
+      >
 
-  📅
+        📅
 
-  <span>
-    {dueDate ? dueDate : "Choose date"}
-  </span>
+        <span>
+          {dueDate
+            ? dueDate
+            : "Choose date"}
+        </span>
 
+        <input
+          ref={dateRef}
+          type="date"
+          value={dueDate}
+          onChange={(event) =>
+            setDueDate(event.target.value)
+          }
+        />
 
-  <input
-    ref={dateRef}
-    type="date"
-    value={dueDate}
-    onChange={(event) =>
-      setDueDate(event.target.value)
-    }
-  />
-
-</div>
-
+      </div>
 
       <button
         className="add-button"
@@ -100,9 +108,11 @@ function TaskForm({ onAddTask }) {
         + Add Task
       </button>
 
-
     </form>
-  );
+
+  </div>
+
+);
 }
 
 export default TaskForm;
