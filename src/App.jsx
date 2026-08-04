@@ -35,6 +35,11 @@ const handleSaveEdit = () => {
   setEditingTaskId(null);
   setEditingText("");
 };
+const handleDeleteTask = (id) => {
+  const updatedTasks = tasks.filter((task) => task.id !== id);
+
+  setTasks(updatedTasks);
+};
   const handleToggleTask = (id) => {
     const updatedTasks = tasks.map((task) =>
       task.id === id
@@ -57,6 +62,7 @@ const handleSaveEdit = () => {
   editingText={editingText}
   setEditingText={setEditingText}
   onSaveEdit={handleSaveEdit}
+  onDeleteTask={handleDeleteTask}
 />
     </div>
   );
