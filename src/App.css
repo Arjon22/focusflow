@@ -212,14 +212,46 @@
    TASK STATISTICS
 ========================== */
 
+.task-stats-wrapper {
+    margin-bottom: 25px;
+}
+
 .task-stats {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 25px;
+    align-items: center;
+    gap: 20px;
     padding: 18px;
     background: rgba(255, 255, 255, 0.55);
     border-radius: 18px;
     backdrop-filter: blur(10px);
+}
+
+.progress-container {
+    margin-top: 20px;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 18px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width .4s ease;
 }
 
 .task-stats div {
@@ -734,6 +766,10 @@
    TASK STATUS BADGES
 ========================== */
 
+.progress-container {
+    flex-basis: 100%;
+}
+
 .task-status {
     margin-left: 10px;
     font-size: 13px;
@@ -759,4 +795,267 @@
 .status-upcoming {
     background: #dcfce7;
     color: #166534;
+}
+
+.progress-container {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+
+.progress-container p {
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+
+/* ==========================
+   TASK FILTER BUTTONS
+========================== */
+
+.task-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.task-filter button {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.6);
+    transition: 0.3s ease;
+}
+
+.task-filter button:hover {
+    transform: translateY(-2px);
+}
+
+.task-filter .active-filter {
+    font-weight: bold;
+}
+
+
+/* ==========================
+   TASK FILTER BUTTONS
+========================== */
+
+.task-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.task-filter button {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.65);
+    color: var(--text);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.task-filter button:hover {
+    transform: translateY(-2px);
+}
+
+.task-filter .active-filter {
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+}
+
+
+/* ==========================
+   PREMIUM TASK FORM
+========================== */
+
+.task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.task-input {
+    height: 55px;
+    padding: 0 20px;
+    border-radius: 18px;
+    font-size: 16px;
+}
+
+
+/* PRIORITY PILLS */
+
+.priority-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.priority-option {
+    flex: 1;
+    padding: 10px;
+    border-radius: 18px;
+    border: none;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.6);
+    transition: .3s;
+}
+
+.priority-option:hover {
+    transform: translateY(-3px);
+}
+
+.priority-option.selected {
+    transform: scale(1.05);
+    font-weight: bold;
+}
+
+.priority-option.high.selected {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.priority-option.medium.selected {
+    background: #fff8e1;
+    color: #f57f17;
+}
+
+.priority-option.low.selected {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+
+/* DATE PICKER */
+
+.date-picker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .65);
+    cursor: pointer;
+}
+
+.date-picker input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* ADD BUTTON */
+
+.add-button {
+    height: 52px;
+    border-radius: 18px;
+    background: linear-gradient( 135deg, #43a047, #66bb6a);
+    font-size: 16px;
+}
+
+
+/* ==========================
+   SEARCH DESIGN
+========================== */
+
+.search-container {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.search-input {
+    padding-left: 48px;
+    height: 52px;
+    border-radius: 18px;
+}
+
+
+/* ==========================
+   PREMIUM DATE FILTER
+========================== */
+
+.date-filter {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.date-filter-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+    transition: .3s ease;
+    box-sizing: border-box;
+}
+
+.date-filter-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .08);
+}
+
+.calendar-icon {
+    font-size: 20px;
+}
+
+.date-filter-button input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.clear-date {
+    margin-left: auto;
+    border: none;
+    background: #ffebee;
+    color: #c62828;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.clear-date:hover {
+    background: #ffcdd2;
 }
