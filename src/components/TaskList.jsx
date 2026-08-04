@@ -6,6 +6,7 @@ function TaskList({
   editingText,
   setEditingText,
   onSaveEdit,
+  onDeleteTask,
 }) {
   return (
     <ul>
@@ -18,38 +19,46 @@ function TaskList({
           />
 
           {task.id === editingTaskId ? (
-  <>
-    <input
-  type="text"
-  value={editingText}
-  onChange={(e) => setEditingText(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === "Enter") {
-      onSaveEdit();
+            <>
+              <input
+                type="text"
+                value={editingText}
+                onChange={(e) => setEditingText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    onSaveEdit();
+                  }
+                }}
+              />
+
+              <button onClick={onSaveEdit}>Save</button>
+            </>
+          ) : (
+            <>
+              <span
+                style={{
+                  textDecoration: task.completed ? "line-through" : "none",
+                  marginLeft: "8px",
+                }}
+              >
+                {task.title}
+              </span>
+
+              <button onClick={() => onEditClick(task.id)}>
+                Edit
+              </button>
+
+              <button
+  onClick={() => {
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      onDeleteTask(task.id);
     }
   }}
-/>
-
-    <button onClick={onSaveEdit}>
-  Save
+>
+  Delete
 </button>
-  </>
-) : (
-  <>
-    <span
-      style={{
-        textDecoration: task.completed ? "line-through" : "none",
-        marginLeft: "8px",
-      }}
-    >
-      {task.title}
-    </span>
-
-    <button onClick={() => onEditClick(task.id)}>
-      Edit
-    </button>
-  </>
-)}
+            </>
+          )}
         </li>
       ))}
     </ul>
