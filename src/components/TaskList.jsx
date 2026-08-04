@@ -1,3 +1,41 @@
+const getTaskStatus = (dueDate) => {
+  if (!dueDate) return null;
+
+  const today = new Date();
+  const due = new Date(dueDate);
+
+  today.setHours(0, 0, 0, 0);
+  due.setHours(0, 0, 0, 0);
+
+  const difference =
+    (due - today) / (1000 * 60 * 60 * 24);
+
+  if (difference < 0) {
+    return {
+      text: "⚠️ Overdue",
+      className: "status-overdue",
+    };
+  }
+
+  if (difference === 0) {
+    return {
+      text: "🟡 Due Today",
+      className: "status-today",
+    };
+  }
+
+  if (difference === 1) {
+    return {
+      text: "🔵 Due Tomorrow",
+      className: "status-tomorrow",
+    };
+  }
+
+  return {
+    text: `🟢 Due in ${difference} days`,
+    className: "status-upcoming",
+  };
+};
 function TaskList({
   tasks,
   onToggleTask,
@@ -90,11 +128,13 @@ function TaskList({
     })}
   </span>
 )}
-{task.dueDate &&
- !task.completed &&
- new Date(task.dueDate) < new Date(new Date().toDateString()) && (
-  <span className="overdue-badge">
-    ⚠️ Overdue
+{!task.completed && getTaskStatus(task.dueDate) && (
+  <span
+    className={`task-status ${
+      getTaskStatus(task.dueDate).className
+    }`}
+  >
+    {getTaskStatus(task.dueDate).text}
   </span>
 )}
 </div>
