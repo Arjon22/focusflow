@@ -5,6 +5,7 @@ import TaskList from "./components/TaskList";
 import "./App.css";
 import Leaves from "./components/Leaves";
 import TaskStats from "./components/TaskStats";
+import TaskFilter from "./components/TaskFilter";
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -14,6 +15,7 @@ function App() {
 });
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingText, setEditingText] = useState("");
+  const [filter, setFilter] = useState("all");
 
   const handleAddTask = (taskTitle) => {
   const trimmedTitle = taskTitle.trim();
@@ -35,10 +37,11 @@ function App() {
   }
 
   const newTask = {
-    id: Date.now(),
-    title: trimmedTitle,
-    completed: false,
-  };
+ id: Date.now(),
+ title: trimmedTitle,
+ completed:false,
+ priority:"medium"
+};
 
   setTasks([...tasks, newTask]);
 };
@@ -102,6 +105,19 @@ const handleDeleteTask = (id) => {
 useEffect(() => {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }, [tasks]);
+const filteredTasks = tasks.filter((task) => {
+
+  if (filter === "completed") {
+    return task.completed;
+  }
+
+  if (filter === "active") {
+    return !task.completed;
+  }
+
+  return true;
+
+});
   return (
   <>
     <Leaves />
@@ -115,8 +131,13 @@ useEffect(() => {
 
 <TaskStats tasks={tasks} />
 
+<TaskFilter
+  filter={filter}
+  setFilter={setFilter}
+/>
+
 <TaskList
-  tasks={tasks}
+  tasks={filteredTasks}
   onToggleTask={handleToggleTask}
   onEditClick={handleEditClick}
   editingTaskId={editingTaskId}
