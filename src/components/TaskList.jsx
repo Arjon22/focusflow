@@ -10,6 +10,27 @@ function TaskList({
   onCancelEdit,
 }) {
   return (
+
+  tasks.length === 0 ? (
+
+    <div className="empty-state">
+
+      <div className="empty-icon">
+        🌸
+      </div>
+
+      <h3>
+        No tasks yet
+      </h3>
+
+      <p>
+        Add your first task and start focusing.
+      </p>
+
+    </div>
+
+  ) : (
+
     <ul className="task-list">
 
       {tasks.map((task) => (
@@ -117,6 +138,7 @@ function TaskList({
       ))}
 
     </ul>
+  )
   );
 }
 
