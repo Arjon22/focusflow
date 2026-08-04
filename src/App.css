@@ -640,3 +640,30 @@
     background: #8e0000;
     transform: translateY(-2px);
 }
+
+
+/* ==========================
+   TASK DUE DATE
+========================== */
+
+.task-date {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--soft-text);
+}
+
+
+/* ==========================
+   OVERDUE BADGE
+========================== */
+
+.overdue-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #fdecea;
+    color: #c62828;
+    font-size: 12px;
+    font-weight: 600;
+}

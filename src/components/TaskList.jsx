@@ -73,13 +73,30 @@ function TaskList({
               <div className="task-info">
 
   <span className={`priority-badge ${task.priority || "medium"}`}>
-  {task.priority || "medium"}
-</span>
+    {(task.priority || "medium").charAt(0).toUpperCase() +
+      (task.priority || "medium").slice(1)}
+  </span>
 
   <span className="task-title">
     {task.title}
   </span>
 
+  {task.dueDate && (
+  <span className="task-date">
+    📅 Due: {new Date(task.dueDate).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })}
+  </span>
+)}
+{task.dueDate &&
+ !task.completed &&
+ new Date(task.dueDate) < new Date(new Date().toDateString()) && (
+  <span className="overdue-badge">
+    ⚠️ Overdue
+  </span>
+)}
 </div>
 
             )}

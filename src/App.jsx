@@ -26,7 +26,7 @@ function App() {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
 
-  const handleAddTask = (taskTitle, priority) => {
+  const handleAddTask = (taskTitle, priority, dueDate) => {
   const trimmedTitle = taskTitle.trim();
 
   if (!trimmedTitle) {
@@ -49,7 +49,8 @@ function App() {
   id: Date.now(),
   title: trimmedTitle,
   completed: false,
-  priority: priority,
+  priority: priority || "medium",
+  dueDate: dueDate || null,
 };
   setTasks([...tasks, newTask]);
 };
