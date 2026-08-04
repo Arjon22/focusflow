@@ -1,17 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+  const savedTasks = localStorage.getItem("tasks");
+
+  return savedTasks ? JSON.parse(savedTasks) : [];
+});
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingText, setEditingText] = useState("");
 
   const handleAddTask = (taskTitle) => {
+  const trimmedTitle = taskTitle.trim();
+
+  if (!trimmedTitle) {
+    alert("Task cannot be empty.");
+    return;
+  }
+
+  const taskExists = tasks.some(
+    (task) =>
+      task.title.trim().toLowerCase() ===
+      trimmedTitle.toLowerCase()
+  );
+
+  if (taskExists) {
+    alert(`"${trimmedTitle}" already exists.`);
+    return;
+  }
+
   const newTask = {
     id: Date.now(),
-    title: taskTitle,
+    title: trimmedTitle,
     completed: false,
   };
 
@@ -49,7 +71,9 @@ const handleDeleteTask = (id) => {
 
     setTasks(updatedTasks);
   };
-
+useEffect(() => {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}, [tasks]);
   return (
     <div className="app">
       <Header />
