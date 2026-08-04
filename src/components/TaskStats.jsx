@@ -1,4 +1,4 @@
-function TaskStats({ tasks }) {
+function TaskStats({ tasks, onDeleteAllTasks }) {
 
   const totalTasks = tasks.length;
 
@@ -26,7 +26,12 @@ function TaskStats({ tasks }) {
         <strong>{remainingTasks}</strong>
         <span>Remaining</span>
       </div>
-
+<button
+  className="delete-all-btn"
+  onClick={onDeleteAllTasks}
+>
+  Delete All Tasks
+</button>
     </div>
   );
 }
