@@ -1,8 +1,15 @@
 function Header() {
   return (
-    <header>
-      <h1>FocusFlow</h1>
-      <p>Manage your daily tasks efficiently.</p>
+    <header className="header">
+      <h1>
+        🌿 FocusFlow
+      </h1>
+
+      <p>
+        Stay organized. Stay productive.
+        <br />
+        One task at a time.
+      </p>
     </header>
   );
 }
