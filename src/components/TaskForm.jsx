@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 function TaskForm({ onAddTask }) {
   const [task, setTask] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("medium");
+  const dateRef = useRef(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,43 +24,82 @@ function TaskForm({ onAddTask }) {
       <input
         className="task-input"
         type="text"
-        placeholder="Turn your goals into progress"
+        placeholder="✨ What needs to be done?"
         value={task}
-        onChange={(event) => setTask(event.target.value)}
+        onChange={(event) =>
+          setTask(event.target.value)
+        }
       />
 
 
-      <select
-        className="priority-select"
-        value={priority}
-        onChange={(event) => setPriority(event.target.value)}
+      <div className="priority-wrapper">
+
+        <button
+          type="button"
+          className={`priority-option high ${
+            priority === "high" ? "selected" : ""
+          }`}
+          onClick={() => setPriority("high")}
+        >
+          🔴 High
+        </button>
+
+
+        <button
+          type="button"
+          className={`priority-option medium ${
+            priority === "medium" ? "selected" : ""
+          }`}
+          onClick={() => setPriority("medium")}
+        >
+          🟡 Medium
+        </button>
+
+
+        <button
+          type="button"
+          className={`priority-option low ${
+            priority === "low" ? "selected" : ""
+          }`}
+          onClick={() => setPriority("low")}
+        >
+          🟢 Low
+        </button>
+
+      </div>
+
+
+      <div
+  className="date-picker"
+  onClick={() => dateRef.current.showPicker()}
+>
+
+  📅
+
+  <span>
+    {dueDate ? dueDate : "Choose date"}
+  </span>
+
+
+  <input
+    ref={dateRef}
+    type="date"
+    value={dueDate}
+    onChange={(event) =>
+      setDueDate(event.target.value)
+    }
+  />
+
+</div>
+
+
+      <button
+        className="add-button"
+        type="submit"
       >
-        <option value="high">
-          High
-        </option>
-
-        <option value="medium">
-          Medium
-        </option>
-
-        <option value="low">
-          Low
-        </option>
-
-      </select>
-
-
-      <input
-        className="date-input"
-        type="date"
-        value={dueDate}
-        onChange={(event) => setDueDate(event.target.value)}
-      />
-
-
-      <button className="add-button" type="submit">
-        Add Task
+        + Add Task
       </button>
+
 
     </form>
   );
