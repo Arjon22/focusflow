@@ -70,9 +70,17 @@ function TaskList({
 
             ) : (
 
-              <span className="task-title">
-                {task.title}
-              </span>
+              <div className="task-info">
+
+  <span className={`priority-badge ${task.priority || "medium"}`}>
+  {task.priority || "medium"}
+</span>
+
+  <span className="task-title">
+    {task.title}
+  </span>
+
+</div>
 
             )}
 
