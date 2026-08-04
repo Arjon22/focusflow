@@ -14,17 +14,22 @@ function TaskForm({ onAddTask }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Enter a task..."
-        value={task}
-        onChange={(event) => setTask(event.target.value)}
-      />
+  <form className="task-form" onSubmit={handleSubmit}>
 
-      <button type="submit">Add Task</button>
-    </form>
-  );
+    <input
+      className="task-input"
+      type="text"
+      placeholder="What needs your focus today?"
+      value={task}
+      onChange={(event) => setTask(event.target.value)}
+    />
+
+    <button className="add-button" type="submit">
+      Add Task
+    </button>
+
+  </form>
+);
 }
 
 export default TaskForm;

@@ -7,23 +7,39 @@ function TaskList({
   setEditingText,
   onSaveEdit,
   onDeleteTask,
+  onCancelEdit,
 }) {
   return (
-    <ul>
-      {tasks.map((task) => (
-        <li key={task.id}>
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => onToggleTask(task.id)}
-          />
+    <ul className="task-list">
 
-          {task.id === editingTaskId ? (
-            <>
+      {tasks.map((task) => (
+
+        <li
+          className={`task-card ${
+            task.completed ? "completed" : ""
+          }`}
+          key={task.id}
+        >
+
+          <div className="task-main">
+
+            <input
+              className="task-checkbox"
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => onToggleTask(task.id)}
+            />
+
+
+            {task.id === editingTaskId ? (
+
               <input
+                className="edit-input"
                 type="text"
                 value={editingText}
-                onChange={(e) => setEditingText(e.target.value)}
+                onChange={(e) =>
+                  setEditingText(e.target.value)
+                }
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     onSaveEdit();
@@ -31,36 +47,75 @@ function TaskList({
                 }}
               />
 
-              <button onClick={onSaveEdit}>Save</button>
-            </>
-          ) : (
-            <>
-              <span
-                style={{
-                  textDecoration: task.completed ? "line-through" : "none",
-                  marginLeft: "8px",
-                }}
-              >
+            ) : (
+
+              <span className="task-title">
                 {task.title}
               </span>
 
-              <button onClick={() => onEditClick(task.id)}>
-                Edit
-              </button>
+            )}
 
-              <button
-  onClick={() => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      onDeleteTask(task.id);
-    }
-  }}
->
-  Delete
-</button>
-            </>
-          )}
+          </div>
+
+
+          <div className="task-actions">
+
+            {task.id === editingTaskId ? (
+
+              <>
+                <button
+                  className="save-btn"
+                  onClick={onSaveEdit}
+                >
+                  Save
+                </button>
+
+
+                <button
+                  className="cancel-btn"
+                  onClick={onCancelEdit}
+                >
+                  Cancel
+                </button>
+              </>
+
+            ) : (
+
+              <>
+
+                <button
+                  className="edit-btn"
+                  onClick={() => onEditClick(task.id)}
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  className="delete-btn"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        "Are you sure you want to delete this task?"
+                      )
+                    ) {
+                      onDeleteTask(task.id);
+                    }
+                  }}
+                >
+                  Delete
+                </button>
+
+              </>
+
+            )}
+
+          </div>
+
         </li>
+
       ))}
+
     </ul>
   );
 }
