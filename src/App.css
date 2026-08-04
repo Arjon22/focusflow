@@ -1059,3 +1059,148 @@
 .clear-date:hover {
     background: #ffcdd2;
 }
+
+
+/* ==========================
+   PRODUCTIVITY DASHBOARD
+========================== */
+
+.dashboard {
+    margin-bottom: 25px;
+}
+
+.dashboard h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.dashboard-card {
+    padding: 18px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: .3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.dashboard-card strong {
+    display: block;
+    font-size: 28px;
+    color: var(--primary);
+}
+
+.dashboard-card span {
+    font-size: 13px;
+    color: var(--soft-text);
+}
+
+@media(max-width:600px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* ==========================
+   PRODUCTIVITY CHART
+========================== */
+
+.productivity-chart {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+}
+
+.productivity-chart h3 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+.chart-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.chart-info span {
+    color: var(--soft-text);
+    font-size: 14px;
+}
+
+.chart-info strong {
+    font-size: 22px;
+    color: var(--primary);
+}
+
+.chart-bar {
+    width: 100%;
+    height: 14px;
+    background: #eeeeee;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.chart-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 20px;
+    transition: width .5s ease;
+}
+
+
+/* ==========================
+   NAVIGATION BAR
+========================== */
+
+.navbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(90%, 600px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #78909c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    transition: 0.3s ease;
+}
+
+.navbar a:hover {
+    transform: translateY(-4px);
+}
+
+.navbar a.active {
+    color: #2e7d32;
+    font-weight: bold;
+}

@@ -1,4 +1,11 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import Tasks from "./pages/Tasks";
+import Calendar from "./pages/Calendar";
+import Settings from "./pages/Settings";
 import Header from "./components/Header";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
@@ -9,6 +16,7 @@ import TaskFilter from "./components/TaskFilter";
 import SearchBar from "./components/SearchBar";
 import TaskSort from "./components/TaskSort";
 import DateFilter from "./components/DateFilter";
+import Navbar from "./components/Navbar";
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -272,54 +280,100 @@ sortedTasks.sort((a, b) => {
 });
 
   return (
-    <>
-      <Leaves />
+  <BrowserRouter>
 
-      <div className="app">
-        <Header />
+    <Leaves />
 
-        <TaskForm
-          onAddTask={handleAddTask}
-        />
+    <Navbar />
 
-        <TaskStats
-          tasks={tasks}
-          onDeleteAllTasks={handleDeleteAllTasks}
-        />
+    <Routes>
 
-        <SearchBar
-          search={search}
-          setSearch={setSearch}
-        />
-        <DateFilter
-  searchDate={searchDate}
-  setSearchDate={setSearchDate}
+      <Route
+        path="/"
+        element={<Home />}
+      />
+
+
+      <Route
+  path="/dashboard"
+  element={
+    <Dashboard
+      tasks={tasks}
+    />
+  }
 />
 
-        <TaskSort
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-        />
 
-        <TaskFilter
-          filter={filter}
-          setFilter={setFilter}
-        />
+      <Route
+        path="/tasks"
+        element={
+          <div className="app">
 
-        <TaskList
-          tasks={sortedTasks}
-          onToggleTask={handleToggleTask}
-          onEditClick={handleEditClick}
-          editingTaskId={editingTaskId}
-          editingText={editingText}
-          setEditingText={setEditingText}
-          onSaveEdit={handleSaveEdit}
-          onDeleteTask={handleDeleteTask}
-          onCancelEdit={handleCancelEdit}
-        />
-      </div>
-    </>
-  );
+            <Header />
+
+            <TaskForm
+              onAddTask={handleAddTask}
+            />
+
+
+            <TaskStats
+              tasks={tasks}
+              onDeleteAllTasks={handleDeleteAllTasks}
+            />
+
+
+            <SearchBar
+              search={search}
+              setSearch={setSearch}
+            />
+
+
+            <TaskSort
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+            />
+
+
+            <TaskFilter
+              filter={filter}
+              setFilter={setFilter}
+            />
+
+
+            <TaskList
+              tasks={sortedTasks}
+              onToggleTask={handleToggleTask}
+              onEditClick={handleEditClick}
+              editingTaskId={editingTaskId}
+              editingText={editingText}
+              setEditingText={setEditingText}
+              onSaveEdit={handleSaveEdit}
+              onDeleteTask={handleDeleteTask}
+              onCancelEdit={handleCancelEdit}
+            />
+
+          </div>
+        }
+      />
+
+
+      <Route
+        path="/calendar"
+        element={<Calendar />}
+      />
+
+
+      <Route
+        path="/settings"
+        element={<Settings />}
+      />
+
+
+    </Routes>
+
+
+  </BrowserRouter>
+);
 }
 
 export default App;
