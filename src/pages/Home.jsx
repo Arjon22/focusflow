@@ -1,7 +1,6 @@
 function Home() {
-
   return (
-    <div>
+    <div className="home-page">
 
       <h1>
         🌿 Welcome to FocusFlow
@@ -9,6 +8,8 @@ function Home() {
 
       <p>
         Stay organized. Stay productive.
+        <br />
+        One task at a time.
       </p>
 
     </div>

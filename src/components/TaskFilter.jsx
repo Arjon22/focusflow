@@ -1,33 +1,40 @@
-function TaskFilter({ filter, setFilter }) {
+function TaskFilter({
+  filter,
+  setFilter
+}) {
 
-  return (
-    <div className="task-filter">
+return (
 
-      <button
-        className={filter === "all" ? "active-filter" : ""}
-        onClick={() => setFilter("all")}
-      >
-        All
-      </button>
+<div className="task-filter">
 
-
-      <button
-        className={filter === "active" ? "active-filter" : ""}
-        onClick={() => setFilter("active")}
-      >
-        Active
-      </button>
+<button
+className={filter==="all" ? "active-filter":""}
+onClick={()=>setFilter("all")}
+>
+All
+</button>
 
 
-      <button
-        className={filter === "completed" ? "active-filter" : ""}
-        onClick={() => setFilter("completed")}
-      >
-        Completed
-      </button>
+<button
+className={filter==="active" ? "active-filter":""}
+onClick={()=>setFilter("active")}
+>
+Active
+</button>
 
-    </div>
-  );
+
+<button
+className={filter==="completed" ? "active-filter":""}
+onClick={()=>setFilter("completed")}
+>
+Completed
+</button>
+
+
+</div>
+
+);
+
 }
 
 export default TaskFilter;
