@@ -1,1 +1,246 @@
+.header {
+    text-align: center;
+    margin-bottom: 35px;
+}
 
+.header h1 {
+    font-size: 42px;
+    color: var(--primary);
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+.header p {
+    color: var(--soft-text);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.app {
+    width: 100%;
+    max-width: 650px;
+    background: var(--card);
+    backdrop-filter: blur(15px);
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    position: relative;
+    z-index: 2;
+}
+
+.task-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 35px;
+}
+
+.task-input {
+    flex: 1;
+    padding: 15px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(46, 125, 50, 0.2);
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    color: var(--text);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.task-input::placeholder {
+    color: #78909c;
+}
+
+.task-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15);
+    transform: translateY(-2px);
+}
+
+.add-button {
+    padding: 0 25px;
+    border: none;
+    border-radius: 14px;
+    background: var(--primary);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(46, 125, 50, 0.25);
+}
+
+.add-button:active {
+    transform: scale(0.95);
+}
+
+.task-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.task-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+.task-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.task-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+.task-title {
+    font-size: 16px;
+    color: var(--text);
+}
+
+.completed .task-title {
+    color: #78909c;
+    opacity: 0.7;
+}
+
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.task-actions button {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.25s ease;
+}
+
+.edit-btn {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.edit-btn:hover {
+    background: #c8e6c9;
+}
+
+.delete-btn {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.delete-btn:hover {
+    background: #ffcdd2;
+}
+
+.save-btn {
+    background: var(--primary);
+    color: white;
+}
+
+.cancel-btn {
+    background: #eceff1;
+    color: #455a64;
+}
+
+.edit-input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 15px;
+}
+
+.sakura-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 350px;
+    height: 100vh;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sakura-container span {
+    position: absolute;
+    top: -50px;
+    width: 18px;
+    height: 25px;
+    background: linear-gradient( 135deg, #ffd6e7, #f8a8c8);
+    border-radius: 100% 0 100% 0;
+    opacity: 0.35;
+    filter: blur(0.2px);
+    animation: petalFall 16s linear infinite;
+}
+
+.sakura-container span:nth-child(1) {
+    right: 40px;
+    animation-delay: 0s;
+}
+
+.sakura-container span:nth-child(2) {
+    right: 100px;
+    animation-delay: 4s;
+}
+
+.sakura-container span:nth-child(3) {
+    right: 180px;
+    animation-delay: 7s;
+}
+
+.sakura-container span:nth-child(4) {
+    right: 240px;
+    animation-delay: 2s;
+}
+
+.sakura-container span:nth-child(5) {
+    right: 80px;
+    animation-delay: 10s;
+}
+
+.sakura-container span:nth-child(6) {
+    right: 300px;
+    animation-delay: 5s;
+}
+
+.sakura-container span:nth-child(7) {
+    right: 150px;
+    animation-delay: 12s;
+}
+
+@keyframes petalFall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+    }
+    50% {
+        transform: translate(40px, 50vh) rotate(180deg);
+    }
+    100% {
+        transform: translate(-30px, 110vh) rotate(360deg);
+    }
+}
