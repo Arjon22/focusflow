@@ -16,11 +16,21 @@ function App() {
     setTasks([...tasks, newTask]);
   };
 
+  const handleToggleTask = (id) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id
+        ? { ...task, completed: !task.completed }
+        : task
+    );
+
+    setTasks(updatedTasks);
+  };
+
   return (
     <div className="app">
       <Header />
       <TaskForm onAddTask={handleAddTask} />
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} onToggleTask={handleToggleTask} />
     </div>
   );
 }
