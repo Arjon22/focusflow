@@ -269,3 +269,82 @@
         transform: translate(-30px, 110vh) rotate(360deg);
     }
 }
+
+
+/* 📱 Responsive Design */
+
+@media (max-width: 768px) {
+    .app {
+        max-width: 100%;
+        padding: 25px 18px;
+        border-radius: 20px;
+    }
+    .header h1 {
+        font-size: 34px;
+    }
+    .header p {
+        font-size: 14px;
+    }
+    .task-form {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .task-input {
+        width: 100%;
+        padding: 14px;
+    }
+    .add-button {
+        height: 45px;
+        width: 100%;
+    }
+    .task-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        padding: 16px;
+    }
+    .task-main {
+        width: 100%;
+    }
+    .task-title {
+        font-size: 15px;
+        word-break: break-word;
+    }
+    .task-actions {
+        width: 100%;
+    }
+    .task-actions button {
+        flex: 1;
+    }
+    .task-stats {
+        padding: 15px 10px;
+    }
+    .task-stats strong {
+        font-size: 21px;
+    }
+    .sakura-container {
+        width: 180px;
+        opacity: 0.7;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 25px 12px;
+    }
+    .header h1 {
+        font-size: 30px;
+    }
+    .task-stats {
+        gap: 10px;
+    }
+    .task-stats span {
+        font-size: 12px;
+    }
+    .task-actions {
+        flex-direction: column;
+    }
+    .task-actions button {
+        width: 100%;
+    }
+}
