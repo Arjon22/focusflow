@@ -6,6 +6,7 @@ import "./App.css";
 import Leaves from "./components/Leaves";
 import TaskStats from "./components/TaskStats";
 import TaskFilter from "./components/TaskFilter";
+import SearchBar from "./components/SearchBar";
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -23,6 +24,7 @@ function App() {
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingText, setEditingText] = useState("");
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
 
   const handleAddTask = (taskTitle, priority) => {
   const trimmedTitle = taskTitle.trim();
@@ -99,6 +101,20 @@ const handleDeleteTask = (id) => {
 
   setTasks(updatedTasks);
 };
+const handleDeleteAllTasks = () => {
+  if (tasks.length === 0) {
+    alert("No tasks to delete.");
+    return;
+  }
+
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete all tasks?"
+  );
+
+  if (confirmDelete) {
+    setTasks([]);
+  }
+};
   const handleToggleTask = (id) => {
     const updatedTasks = tasks.map((task) =>
       task.id === id
@@ -111,7 +127,8 @@ const handleDeleteTask = (id) => {
 useEffect(() => {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }, [tasks]);
-const filteredTasks = tasks.filter((task) => {
+const filteredTasks = tasks
+.filter((task) => {
 
   if (filter === "completed") {
     return task.completed;
@@ -123,7 +140,12 @@ const filteredTasks = tasks.filter((task) => {
 
   return true;
 
-});
+})
+.filter((task) =>
+  task.title
+    .toLowerCase()
+    .includes(search.toLowerCase())
+);
   return (
   <>
     <Leaves />
@@ -135,7 +157,14 @@ const filteredTasks = tasks.filter((task) => {
   onAddTask={handleAddTask}
 />
 
-<TaskStats tasks={tasks} />
+<TaskStats
+  tasks={tasks}
+  onDeleteAllTasks={handleDeleteAllTasks}
+/>
+<SearchBar
+  search={search}
+  setSearch={setSearch}
+/>
 
 <TaskFilter
   filter={filter}
