@@ -1,0 +1,33 @@
+/* ==========================
+   HEADER SECTION
+========================== */
+
+.header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.header h1 {
+    font-size: 42px;
+    color: var(--primary);
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+.header p {
+    color: var(--soft-text);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+body {
+    padding-top: 80px;
+}
