@@ -4,6 +4,7 @@ import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 import "./App.css";
 import Leaves from "./components/Leaves";
+import TaskStats from "./components/TaskStats";
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -109,20 +110,22 @@ useEffect(() => {
       <Header />
 
       <TaskForm 
-        onAddTask={handleAddTask}
-      />
+  onAddTask={handleAddTask}
+/>
 
-      <TaskList
-        tasks={tasks}
-        onToggleTask={handleToggleTask}
-        onEditClick={handleEditClick}
-        editingTaskId={editingTaskId}
-        editingText={editingText}
-        setEditingText={setEditingText}
-        onSaveEdit={handleSaveEdit}
-        onDeleteTask={handleDeleteTask}
-        onCancelEdit={handleCancelEdit}
-      />
+<TaskStats tasks={tasks} />
+
+<TaskList
+  tasks={tasks}
+  onToggleTask={handleToggleTask}
+  onEditClick={handleEditClick}
+  editingTaskId={editingTaskId}
+  editingText={editingText}
+  setEditingText={setEditingText}
+  onSaveEdit={handleSaveEdit}
+  onDeleteTask={handleDeleteTask}
+  onCancelEdit={handleCancelEdit}
+/>
 
     </div>
   </>
