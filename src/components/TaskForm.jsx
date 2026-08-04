@@ -2,31 +2,55 @@ import { useState } from "react";
 
 function TaskForm({ onAddTask }) {
   const [task, setTask] = useState("");
+const [priority, setPriority] = useState("medium");
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (task.trim() === "") return;
 
-    onAddTask(task);
+    onAddTask(task, priority);
 
     setTask("");
+setPriority("medium");
   };
 
   return (
   <form className="task-form" onSubmit={handleSubmit}>
 
     <input
-      className="task-input"
-      type="text"
-      placeholder="What needs your focus today?"
-      value={task}
-      onChange={(event) => setTask(event.target.value)}
-    />
+  className="task-input"
+  type="text"
+  placeholder="Turn your goals into progress"
+  value={task}
+  onChange={(event) => setTask(event.target.value)}
+/>
 
-    <button className="add-button" type="submit">
-      Add Task
-    </button>
+
+<select
+  className="priority-select"
+  value={priority}
+  onChange={(event) => setPriority(event.target.value)}
+>
+  <option value="high">
+    High
+  </option>
+
+  <option value="medium">
+    Medium
+  </option>
+
+  <option value="low">
+    Low
+  </option>
+
+</select>
+
+
+<button className="add-button" type="submit">
+  Add Task
+</button>
+    
 
   </form>
 );
