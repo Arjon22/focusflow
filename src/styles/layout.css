@@ -90,3 +90,10 @@ body {
         padding: 20px 15px;
     }
 }
+
+.reminder-manager {
+    position: relative;
+    z-index: 10;
+    margin: 20px auto;
+    width: fit-content;
+}
