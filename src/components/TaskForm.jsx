@@ -4,6 +4,13 @@ function TaskForm({ onAddTask }) {
   const [task, setTask] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("medium");
+  const [dueTime, setDueTime] = useState("");
+
+const [reminder, setReminder] = useState("none");
+
+const [repeat, setRepeat] = useState("none");
+
+const [notes, setNotes] = useState("");
   const dateRef = useRef(null);
 
   const handleSubmit = (event) => {
@@ -11,11 +18,23 @@ function TaskForm({ onAddTask }) {
 
     if (task.trim() === "") return;
 
-    onAddTask(task, priority, dueDate);
+    onAddTask(
+  task,
+  priority,
+  dueDate,
+  dueTime,
+  reminder,
+  repeat,
+  notes
+);
 
     setTask("");
     setDueDate("");
     setPriority("medium");
+    setDueTime("");
+setReminder("none");
+setRepeat("none");
+setNotes("");
   };
 
   return (
@@ -100,6 +119,49 @@ function TaskForm({ onAddTask }) {
         />
 
       </div>
+      {/* NEW: Due Time */}
+<input
+  className="task-input"
+  type="time"
+  value={dueTime}
+  onChange={(e) => setDueTime(e.target.value)}
+/>
+
+{/* NEW: Reminder */}
+<select
+  className="task-input"
+  value={reminder}
+  onChange={(e) => setReminder(e.target.value)}
+>
+  <option value="none">⏰ No Reminder</option>
+  <option value="5">5 minutes before</option>
+  <option value="15">15 minutes before</option>
+  <option value="30">30 minutes before</option>
+  <option value="60">1 hour before</option>
+  <option value="1440">1 day before</option>
+</select>
+
+{/* NEW: Repeat */}
+<select
+  className="task-input"
+  value={repeat}
+  onChange={(e) => setRepeat(e.target.value)}
+>
+  <option value="none">🔁 Never Repeat</option>
+  <option value="daily">Daily</option>
+  <option value="weekly">Weekly</option>
+  <option value="monthly">Monthly</option>
+  <option value="yearly">Yearly</option>
+</select>
+
+{/* NEW: Notes */}
+<textarea
+  className="task-input"
+  placeholder="📝 Notes (optional)"
+  value={notes}
+  onChange={(e) => setNotes(e.target.value)}
+  rows={4}
+/>
 
       <button
         className="add-button"
