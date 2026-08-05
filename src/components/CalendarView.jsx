@@ -206,13 +206,22 @@ function CalendarView({
 
 
   {day &&
-    tasks.some(
+  (() => {
+    const taskCount = tasks.filter(
       (task) =>
         task.dueDate ===
         `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
-    ) && (
-      <span className="task-dot"></span>
-    )}
+    ).length;
+
+    return (
+      taskCount > 0 && (
+        <span className="task-count">
+  {taskCount}
+</span>
+      )
+    );
+  })()
+}
 
 </div>
   );
@@ -243,23 +252,48 @@ function CalendarView({
 
     <div className="calendar-task-title">
 
-  {getTaskCategory(task.title).icon}
-
-  {" "}
-
   {task.title}
 
 </div>
 
-    <div className="calendar-task-info">
+    <div className="calendar-task-info category">
+
+  {getTaskCategory(task.title).icon}
+
+  {" "}
 
   {getTaskCategory(task.title).category}
 
 </div>
 
-    <div className="calendar-task-info">
-      ⏰ {task.dueTime || "No time set"}
-    </div>
+
+<div
+  className={`calendar-task-info priority ${task.priority}`}
+>
+
+  {task.priority === "high" && "🔴 High"}
+
+  {task.priority === "medium" && "🟡 Medium"}
+
+  {task.priority === "low" && "🟢 Low"}
+
+</div>
+
+
+<div className="calendar-task-info time">
+
+  ⏰ {task.dueTime || "No time set"}
+
+</div>
+
+
+{task.notes && (
+  <div className="calendar-task-info notes">
+
+    📝 {task.notes}
+
+  </div>
+)}
 
   </div>
 ))
