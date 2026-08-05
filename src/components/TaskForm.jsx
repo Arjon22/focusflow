@@ -1,8 +1,13 @@
 import { useState, useRef } from "react";
 
-function TaskForm({ onAddTask }) {
+function TaskForm({
+  onAddTask,
+  defaultDueDate = "",
+  onClose,
+  onTaskAdded,
+}) {
   const [task, setTask] = useState("");
-  const [dueDate, setDueDate] = useState("");
+  const [dueDate, setDueDate] = useState(defaultDueDate);
   const [priority, setPriority] = useState("medium");
   const [dueTime, setDueTime] = useState("");
 
@@ -26,10 +31,14 @@ const [notes, setNotes] = useState("");
   reminder,
   repeat,
   notes
+  
 );
+if (onTaskAdded) {
+  onTaskAdded();
+}
 
     setTask("");
-    setDueDate("");
+    setDueDate(defaultDueDate);
     setPriority("medium");
     setDueTime("");
 setReminder("none");
@@ -169,6 +178,15 @@ setNotes("");
       >
         + Add Task
       </button>
+      {onClose && (
+  <button
+    type="button"
+    className="cancel-button"
+    onClick={onClose}
+  >
+    Cancel
+  </button>
+)}
 
     </form>
 
