@@ -1,6 +1,6 @@
 .calendar-page {
     width: 100%;
-    max-width: 1280px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 40px 30px;
 }
@@ -246,8 +246,12 @@
     .calendar-header {
         margin-bottom: 20px;
     }
+    .calendar-header {
+        gap: 10px;
+    }
     .calendar-header h2 {
-        font-size: 20px;
+        text-align: center;
+        font-size: 18px;
     }
     .calendar-header button {
         width: 40px;
@@ -256,12 +260,12 @@
         font-size: 16px;
     }
     .calendar-grid {
-        gap: 8px;
+        gap: 5px;
     }
     .calendar-date {
-        min-height: 55px;
+        min-height: 45px;
+        font-size: 14px;
         border-radius: 12px;
-        font-size: 15px;
     }
     .calendar-day-name {
         font-size: 13px;
