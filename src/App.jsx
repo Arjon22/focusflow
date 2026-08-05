@@ -9,6 +9,7 @@ import Settings from "./pages/Settings";
 
 import Navbar from "./components/Navbar";
 import Leaves from "./components/Leaves";
+import ReminderChecker from "./components/ReminderChecker";
 
 import "./styles/header.css";
 import "./styles/layout.css";
@@ -17,6 +18,8 @@ import "./styles/dashboard.css";
 import "./styles/home.css";
 import "./styles/calendar.css";
 import "./styles/navigation.css";
+import "./styles/settings.css";
+
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -312,7 +315,12 @@ sortedTasks.sort((a, b) => {
 
   <Navbar />
 
-  <main className="main-content">
+    <main className="main-content">
+
+  <ReminderChecker tasks={tasks} />
+
+  
+    
 
     <Routes>
 
@@ -351,7 +359,7 @@ sortedTasks.sort((a, b) => {
         }
       />
 
-      <Route
+     <Route
   path="/calendar"
   element={
     <Calendar
@@ -360,7 +368,11 @@ sortedTasks.sort((a, b) => {
     />
   }
 />
-      <Route path="/settings" element={<Settings />} />
+
+<Route
+  path="/settings"
+  element={<Settings />}
+/>
 
     </Routes>
 
