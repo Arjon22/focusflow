@@ -353,7 +353,12 @@ sortedTasks.sort((a, b) => {
 
       <Route
   path="/calendar"
-  element={<Calendar tasks={tasks} />}
+  element={
+    <Calendar
+      tasks={tasks}
+      onAddTask={handleAddTask}
+    />
+  }
 />
       <Route path="/settings" element={<Settings />} />
 
