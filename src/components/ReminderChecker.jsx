@@ -3,6 +3,29 @@ import { useEffect, useRef } from "react";
 function ReminderChecker({ tasks }) {
 
   const notifiedTasks = useRef(new Set());
+  const getReminderText = (minutes) => {
+
+  switch (minutes) {
+    case "5":
+      return "5 minutes";
+
+    case "15":
+      return "15 minutes";
+
+    case "30":
+      return "30 minutes";
+
+    case "60":
+      return "1 hour";
+
+    case "1440":
+      return "1 day";
+
+    default:
+      return `${minutes} minutes`;
+  }
+
+};
 
   useEffect(() => {
 
@@ -45,9 +68,9 @@ function ReminderChecker({ tasks }) {
   "🔔 FocusFlow Reminder",
   {
     body:
-      `📌 ${task.title}\n` +
-      `⏰ Starts in ${task.reminder} minute${task.reminder === "1" ? "" : "s"}\n` +
-      `Priority: ${task.priority.toUpperCase()}`,
+  `📌 ${task.title}\n` +
+  `⏰ Starts in ${getReminderText(task.reminder)}\n` +
+  `Priority: ${task.priority.toUpperCase()}`,
   }
 );
           }
