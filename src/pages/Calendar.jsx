@@ -1,6 +1,6 @@
 import CalendarView from "../components/CalendarView";
 
-function Calendar() {
+function Calendar({ tasks }) {
   return (
     <div className="calendar-page">
       <div className="section-header">
@@ -8,7 +8,7 @@ function Calendar() {
         <p>View and manage your upcoming tasks.</p>
       </div>
 
-      <CalendarView />
+      <CalendarView tasks={tasks} />
     </div>
   );
 }
