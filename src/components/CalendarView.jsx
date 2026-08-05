@@ -1,4 +1,5 @@
 import { useState } from "react";
+import TaskForm from "./TaskForm";
 function getTaskCategory(title) {
 
   const text = title.toLowerCase();
@@ -58,12 +59,16 @@ function getTaskCategory(title) {
   };
 }
 
-function CalendarView({ tasks }) {
+function CalendarView({
+  tasks,
+  onAddTask,
+}) {
     
     
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
+  const [showTaskForm, setShowTaskForm] = useState(false);
   
 
 
@@ -183,7 +188,12 @@ function CalendarView({ tasks }) {
   return (
     <div
   key={index}
-  onClick={() => day && setSelectedDate(day)}
+  onClick={() => {
+  if (day) {
+    setSelectedDate(day);
+    setShowTaskForm(false);
+  }
+}}
   className={
     isSelected
       ? "calendar-date selected"
@@ -229,6 +239,7 @@ function CalendarView({ tasks }) {
     key={task.id}
     className="calendar-task"
   >
+    
 
     <div className="calendar-task-title">
 
@@ -257,6 +268,22 @@ function CalendarView({ tasks }) {
           No tasks scheduled.
         </p>
       )}
+      <button
+  className="calendar-add-task"
+  onClick={() => setShowTaskForm(true)}
+>
+  + Add Task
+</button>
+{showTaskForm && selectedDate && (
+  <TaskForm
+  onAddTask={onAddTask}
+  defaultDueDate={
+    `${year}-${String(month + 1).padStart(2, "0")}-${String(selectedDate).padStart(2, "0")}`
+  }
+  onClose={() => setShowTaskForm(false)}
+  onTaskAdded={() => setShowTaskForm(false)}
+/> )}
+
 
     </>
   ) : (
