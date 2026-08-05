@@ -14,6 +14,9 @@ import "./styles/header.css";
 import "./styles/layout.css";
 import "./styles/task.css";
 import "./styles/dashboard.css";
+import "./styles/home.css";
+import "./styles/calendar.css";
+import "./styles/navigation.css";
 
 function App() {
   const [tasks, setTasks] = useState(() => {
@@ -24,10 +27,19 @@ function App() {
     }
 
     return JSON.parse(savedTasks).map((task) => ({
-      ...task,
-      priority: task.priority || "medium",
-      dueDate: task.dueDate || null,
-    }));
+  ...task,
+
+  priority: task.priority || "medium",
+
+  dueDate: task.dueDate || "",
+  dueTime: task.dueTime || "",
+
+  reminder: task.reminder || "none",
+
+  repeat: task.repeat || "none",
+
+  notes: task.notes || "",
+}));
   });
 
   const [editingTaskId, setEditingTaskId] = useState(null);
@@ -37,7 +49,15 @@ function App() {
   const [sortBy, setSortBy] = useState("due-date");
   const [searchDate, setSearchDate] = useState("");
 
-  const handleAddTask = (taskTitle, priority, dueDate) => {
+  const handleAddTask = (
+  taskTitle,
+  priority,
+  dueDate,
+  dueTime,
+  reminder,
+  repeat,
+  notes
+) => {
     const trimmedTitle = taskTitle.trim();
 
     if (!trimmedTitle) {
@@ -57,12 +77,21 @@ function App() {
     }
 
     const newTask = {
-      id: Date.now(),
-      title: trimmedTitle,
-      completed: false,
-      priority: priority || "medium",
-      dueDate: dueDate || null,
-    };
+  id: Date.now(),
+  title: trimmedTitle,
+  completed: false,
+
+  priority: priority || "medium",
+
+  dueDate: dueDate || "",
+  dueTime: dueTime || "",
+
+  reminder: reminder || "none",
+
+  repeat: repeat || "none",
+
+  notes: notes || "",
+};
 
     setTasks([...tasks, newTask]);
   };
@@ -279,73 +308,57 @@ sortedTasks.sort((a, b) => {
   return (
   <BrowserRouter>
 
-    <Leaves />
+  <Leaves />
 
-    <Navbar />
+  <Navbar />
+
+  <main className="main-content">
 
     <Routes>
 
+      <Route path="/" element={<Home />} />
+
       <Route
-        path="/"
-        element={<Home />}
+        path="/dashboard"
+        element={<Dashboard tasks={tasks} />}
       />
 
-
       <Route
-  path="/dashboard"
-  element={
-    <Dashboard
-      tasks={tasks}
-    />
-  }
-/>
-
-
-      <Route
-  path="/tasks"
-  element={
-    <Tasks
-      tasks={sortedTasks}
-      allTasks={tasks}
-      onAddTask={handleAddTask}
-      onToggleTask={handleToggleTask}
-      onEditClick={handleEditClick}
-      editingTaskId={editingTaskId}
-      editingText={editingText}
-      setEditingText={setEditingText}
-      onSaveEdit={handleSaveEdit}
-      onDeleteTask={handleDeleteTask}
-      onCancelEdit={handleCancelEdit}
-      onDeleteAllTasks={handleDeleteAllTasks}
-      filter={filter}
-      setFilter={setFilter}
-      search={search}
-      setSearch={setSearch}
-      sortBy={sortBy}
-      setSortBy={setSortBy}
-      searchDate={searchDate}
-      setSearchDate={setSearchDate}
-    />
-  }
-/>
-
-
-      <Route
-        path="/calendar"
-        element={<Calendar />}
+        path="/tasks"
+        element={
+          <Tasks
+            tasks={sortedTasks}
+            allTasks={tasks}
+            onAddTask={handleAddTask}
+            onToggleTask={handleToggleTask}
+            onEditClick={handleEditClick}
+            editingTaskId={editingTaskId}
+            editingText={editingText}
+            setEditingText={setEditingText}
+            onSaveEdit={handleSaveEdit}
+            onDeleteTask={handleDeleteTask}
+            onCancelEdit={handleCancelEdit}
+            onDeleteAllTasks={handleDeleteAllTasks}
+            filter={filter}
+            setFilter={setFilter}
+            search={search}
+            setSearch={setSearch}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            searchDate={searchDate}
+            setSearchDate={setSearchDate}
+          />
+        }
       />
 
-
-      <Route
-        path="/settings"
-        element={<Settings />}
-      />
-
+      <Route path="/calendar" element={<Calendar />} />
+      <Route path="/settings" element={<Settings />} />
 
     </Routes>
 
+  </main>
 
-  </BrowserRouter>
+</BrowserRouter>
 );
 }
 

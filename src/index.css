@@ -2,7 +2,7 @@
     --primary: #2e7d32;
     --primary-dark: #1b5e20;
     --background: #edf6ef;
-    --card: rgba(255, 255, 255, 0.85);
+    --card: rgba(255, 255, 255, .85);
     --text: #263238;
     --soft-text: #607d68;
 }
@@ -14,13 +14,17 @@
     font-family: "Inter", Arial, sans-serif;
 }
 
+html,
 body {
-    min-height: 100vh;
     width: 100%;
-    background: linear-gradient(135deg, #edf6ef, #dcedc8);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 30px 10px;
+    min-height: 100%;
     overflow-x: hidden;
+}
+
+body {
+    background: linear-gradient(135deg, #edf6ef, #dcedc8);
+}
+
+#root {
+    width: 100%;
 }
