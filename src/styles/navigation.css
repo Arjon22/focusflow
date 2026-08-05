@@ -93,11 +93,7 @@
 ========================== */
 
 @media (min-width: 701px) {
-    .home-page,
-    .dashboard,
-    .tasks-page,
-    .calendar-page,
-    .settings-page {
+    .main-content {
         margin-left: 260px;
         width: calc(100% - 260px);
     }

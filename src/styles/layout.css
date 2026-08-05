@@ -22,9 +22,11 @@ body {
 
 body {
     font-family: "Inter", Arial, sans-serif;
-    background: linear-gradient(135deg, #edf6ef, #dcedc8);
+    background: linear-gradient( 135deg, #edf6ef, #dcedc8);
     color: var(--text);
+    /* navbar spacing */
     padding-top: 80px;
+    /* bottom breathing space */
     padding-bottom: 90px;
 }
 
@@ -36,11 +38,17 @@ body {
 .app,
 .home-page,
 .dashboard,
-.tasks-page {
+.tasks-page,
+.calendar-page,
+.settings-page {
     width: 100%;
     max-width: 1280px;
     margin: 0 auto;
     padding: 40px 30px;
+}
+
+.main-content {
+    width: 100%;
 }
 
 
@@ -55,6 +63,25 @@ body {
 
 
 /* ==========================
+   SECTION HEADER
+========================== */
+
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-header h1 {
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.section-header p {
+    color: var(--soft-text);
+    line-height: 1.6;
+}
+
+
+/* ==========================
    COMMON SECTION
 ========================== */
 
@@ -64,14 +91,28 @@ body {
 
 
 /* ==========================
+   REMINDER MANAGER
+========================== */
+
+.reminder-manager {
+    position: relative;
+    z-index: 10;
+    margin: 20px auto;
+    width: fit-content;
+}
+
+
+/* ==========================
    TABLET
 ========================== */
 
-@media (max-width: 992px) {
+@media (max-width:992px) {
     .app,
     .home-page,
     .dashboard,
-    .tasks-page {
+    .tasks-page,
+    .calendar-page,
+    .settings-page {
         padding: 30px 20px;
     }
 }
@@ -81,19 +122,14 @@ body {
    MOBILE
 ========================== */
 
-@media (max-width: 700px) {
+@media (max-width:700px) {
     .app,
     .home-page,
     .dashboard,
-    .tasks-page {
+    .tasks-page,
+    .calendar-page,
+    .settings-page {
         max-width: 100%;
         padding: 20px 15px;
     }
-}
-
-.reminder-manager {
-    position: relative;
-    z-index: 10;
-    margin: 20px auto;
-    width: fit-content;
 }
