@@ -2,12 +2,21 @@ import { useState } from "react";
 
 function ReminderManager() {
 
+  const notificationSupported =
+    typeof window !== "undefined" &&
+    "Notification" in window;
+
   const [permission, setPermission] = useState(
-    Notification.permission
+    notificationSupported
+      ? Notification.permission
+      : "unsupported"
   );
 
-
   const enableNotifications = async () => {
+
+    if (!notificationSupported) {
+      return;
+    }
 
     const result = await Notification.requestPermission();
 
@@ -15,33 +24,44 @@ function ReminderManager() {
 
   };
 
-
   const sendTestNotification = () => {
 
-    if (Notification.permission === "granted") {
+    if (
+      notificationSupported &&
+      Notification.permission === "granted"
+    ) {
 
-      new Notification("FocusFlow Reminder 🔔", {
-        body: "This is a test notification.",
-      });
+      new Notification(
+        "FocusFlow Reminder 🔔",
+        {
+          body: "This is a test notification.",
+        }
+      );
 
     }
 
   };
 
-
   return (
+
     <div className="reminder-manager">
 
-      {permission !== "granted" && (
+      {permission === "unsupported" && (
 
-        <button
-          onClick={enableNotifications}
-        >
+        <p>
+          ⚠️ Browser notifications are not supported on this device or browser.
+        </p>
+
+      )}
+
+      {permission !== "granted" &&
+        permission !== "unsupported" && (
+
+        <button onClick={enableNotifications}>
           🔔 Enable Reminders
         </button>
 
       )}
-
 
       {permission === "granted" && (
 
@@ -50,17 +70,15 @@ function ReminderManager() {
             ✅ Notifications enabled
           </p>
 
-          <button
-            onClick={sendTestNotification}
-          >
+          <button onClick={sendTestNotification}>
             🔔 Test Notification
           </button>
-
         </>
 
       )}
 
     </div>
+
   );
 }
 
