@@ -14,15 +14,26 @@ function ReminderManager() {
 
   const enableNotifications = async () => {
 
-    if (!notificationSupported) {
-      return;
-    }
+  console.log("Before:", Notification.permission);
 
-    const result = await Notification.requestPermission();
+  const result = await Notification.requestPermission();
 
-    setPermission(result);
+  console.log("Result:", result);
 
-  };
+  setPermission(result);
+
+  if (result === "granted") {
+
+    new Notification(
+      "FocusFlow Test 🎉",
+      {
+        body: "Notifications are working!",
+      }
+    );
+
+  }
+
+};
 
   const sendTestNotification = () => {
 
