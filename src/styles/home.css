@@ -1,30 +1,115 @@
-.tasks-page {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
+/* ==========================
+   HOME PAGE
+========================== */
+
+.home-page {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 40px 25px;
 }
 
-.task-create-section,
-.task-progress-section,
-.task-tools-section {
+
+/* ==========================
+   HOME HERO SECTION
+========================== */
+
+.home-hero {
+    text-align: center;
+    padding: 60px 30px;
     background: rgba(255, 255, 255, .72);
     backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 28px;
+    border-radius: 30px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, .08);
-    border: 1px solid rgba(255, 255, 255, .45);
 }
 
-.section-header {
-    margin-bottom: 20px;
-}
-
-.section-header h2 {
-    font-size: 28px;
+.home-hero h1 {
+    font-size: 42px;
     color: var(--primary);
-    margin-bottom: 8px;
+    margin-bottom: 15px;
 }
 
-.section-header p {
+.home-hero p {
+    font-size: 17px;
     color: var(--soft-text);
+    line-height: 1.6;
+}
+
+
+/* ==========================
+   HOME CARDS
+========================== */
+
+.home-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 35px;
+}
+
+.home-card {
+    background: rgba(255, 255, 255, .75);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, .08);
+    transition: .3s ease;
+}
+
+.home-card:hover {
+    transform: translateY(-5px);
+}
+
+.home-card h3 {
+    color: var(--primary);
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.home-card p {
+    color: var(--soft-text);
+    line-height: 1.5;
+}
+
+
+/* ==========================
+   HOME BUTTON
+========================== */
+
+.home-button {
+    margin-top: 30px;
+    padding: 14px 35px;
+    border-radius: 18px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.home-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+}
+
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:700px) {
+    .home-page {
+        padding: 25px 15px;
+    }
+    .home-hero {
+        padding: 35px 20px;
+    }
+    .home-hero h1 {
+        font-size: 30px;
+    }
+    .home-cards {
+        grid-template-columns: 1fr;
+    }
 }

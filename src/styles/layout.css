@@ -1,168 +1,92 @@
 /* ==========================
-   MAIN APP CONTAINER
+   GLOBAL RESET
 ========================== */
 
-.app {
-    width: 100%;
-    max-width: 650px;
-    background: var(--card);
-    backdrop-filter: blur(15px);
-    padding: 35px;
-    border-radius: 25px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-    position: relative;
-    z-index: 2;
-    overflow: hidden;
-}
-
-
-/* ==========================
-   TASK INPUT FORM
-========================== */
-
-.task-form {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 35px;
-}
-
-.task-input {
-    flex: 1;
-    min-width: 0;
-    padding: 15px 18px;
-    border-radius: 14px;
-    border: 1px solid rgba(46, 125, 50, 0.2);
-    background: rgba(255, 255, 255, 0.7);
-    font-size: 16px;
-    color: var(--text);
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-.task-input::placeholder {
-    font-size: 15px;
-    color: #78909c;
-}
-
-.task-input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15);
-    transform: translateY(-2px);
-}
-
-.add-button {
-    padding: 0 25px;
-    border: none;
-    border-radius: 14px;
-    background: var(--primary);
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.add-button:hover {
-    background: var(--primary-dark);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(46, 125, 50, 0.25);
-}
-
-.add-button:active {
-    transform: scale(0.95);
-}
-
-
-/* PRIORITY PILLS */
-
-.priority-wrapper {
-    display: flex;
-    gap: 10px;
-}
-
-.priority-option {
-    flex: 1;
-    padding: 10px;
-    border-radius: 18px;
-    border: none;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.6);
-    transition: .3s;
-}
-
-.priority-option:hover {
-    transform: translateY(-3px);
-}
-
-.priority-option.selected {
-    transform: scale(1.05);
-    font-weight: bold;
-}
-
-.priority-option.high.selected {
-    background: #ffebee;
-    color: #c62828;
-}
-
-.priority-option.medium.selected {
-    background: #fff8e1;
-    color: #f57f17;
-}
-
-.priority-option.low.selected {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-
-/* ==========================
-   MOBILE APP SAFE LAYOUT
-========================== */
-
-body {
-    padding-bottom: 90px;
-}
-
-.app,
-.dashboard,
-.tasks-page,
-.home-page {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
 
-/* prevent content hiding behind navbar */
+
+/* ==========================
+   BODY
+========================== */
+
+body {
+    font-family: "Inter", Arial, sans-serif;
+    background: linear-gradient(135deg, #edf6ef, #dcedc8);
+    color: var(--text);
+    padding-top: 80px;
+    padding-bottom: 90px;
+}
+
+
+/* ==========================
+   PAGE WRAPPER
+========================== */
+
+.app,
+.home-page,
+.dashboard,
+.tasks-page {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 30px;
+}
+
+
+/* ==========================
+   COMMON CONTENT
+========================== */
 
 .page-content {
+    width: 100%;
     padding-bottom: 100px;
 }
 
 
-/* mobile spacing */
+/* ==========================
+   COMMON SECTION
+========================== */
 
-@media (max-width: 600px) {
+.section {
+    margin-bottom: 30px;
+}
+
+
+/* ==========================
+   TABLET
+========================== */
+
+@media (max-width: 992px) {
     .app,
+    .home-page,
     .dashboard,
-    .tasks-page,
-    .home-page {
-        padding: 15px;
+    .tasks-page {
+        padding: 30px 20px;
     }
 }
 
 
 /* ==========================
-   MAIN CONTENT WRAPPER
+   MOBILE
 ========================== */
 
-.app,
-.dashboard,
-.tasks-page {
-    width: 100%;
-    max-width: 1250px;
-    margin: 0 auto;
-    padding: 40px;
+@media (max-width: 700px) {
+    .app,
+    .home-page,
+    .dashboard,
+    .tasks-page {
+        max-width: 100%;
+        padding: 20px 15px;
+    }
 }
