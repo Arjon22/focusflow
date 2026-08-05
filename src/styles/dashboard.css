@@ -172,3 +172,139 @@
         padding-right: 20px;
     }
 }
+
+
+/* ===========================
+   UPCOMING TASKS
+=========================== */
+
+.upcoming-card {
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+}
+
+.upcoming-card h2 {
+    margin-bottom: 20px;
+    color: #2e7d32;
+}
+
+.upcoming-task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.upcoming-task:last-child {
+    border-bottom: none;
+}
+
+.upcoming-task strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.upcoming-task p {
+    font-size: 14px;
+    color: #777;
+}
+
+.priority {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.priority.high {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.priority.medium {
+    background: #fff8e1;
+    color: #f9a825;
+}
+
+.priority.low {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.empty-text {
+    color: #777;
+}
+
+
+/* ===========================
+   PRIORITY OVERVIEW
+=========================== */
+
+.priority-card {
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+}
+
+.priority-card h2 {
+    color: #2e7d32;
+    margin-bottom: 25px;
+}
+
+.priority-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 30px;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.progress {
+    height: 10px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 20px;
+}
+
+.high-fill {
+    background: #e53935;
+}
+
+.medium-fill {
+    background: #fbc02d;
+}
+
+.low-fill {
+    background: #43a047;
+}
+
+
+/* ===========================
+   FOCUS MESSAGE
+=========================== */
+
+.focus-card {
+    padding: 30px;
+    border-radius: 25px;
+    background: linear-gradient( 135deg, #e8f5e9, #ffffff);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+}
+
+.focus-card h2 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.focus-card p {
+    color: #555;
+    line-height: 1.6;
+}
