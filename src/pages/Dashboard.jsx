@@ -2,6 +2,7 @@ import ProductivityChart from "../components/ProductivityChart";
 import UpcomingTasks from "../components/UpcomingTasks";
 import PriorityOverview from "../components/PriorityOverview";
 import FocusMessage from "../components/FocusMessage";
+import { useState } from "react";
 
 function Dashboard({ tasks = [] }) {
   const totalTasks = tasks.length;
@@ -68,8 +69,9 @@ const lowPriorityTasks = tasks.filter(
     "Your future self will thank you."
   ];
 
-  const message =
-    messages[Math.floor(Math.random() * messages.length)];
+  const [message] = useState(
+  messages[Math.floor(Math.random() * messages.length)]
+);
 
   return (
     <div className="dashboard">
@@ -135,6 +137,15 @@ const lowPriorityTasks = tasks.filter(
           <strong>{highPriorityTasks}</strong>
           <span>High Priority</span>
         </div>
+        <div className="dashboard-card">
+  <strong>{mediumPriorityTasks}</strong>
+  <span>Medium Priority</span>
+</div>
+
+<div className="dashboard-card">
+  <strong>{lowPriorityTasks}</strong>
+  <span>Low Priority</span>
+</div>
 
       </div>
 
