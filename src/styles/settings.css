@@ -1,0 +1,57 @@
+.settings-page {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 30px;
+}
+
+.settings-page h1 {
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.settings-page>p {
+    color: var(--soft-text);
+    margin-bottom: 30px;
+}
+
+.settings-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.settings-card h2 {
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.settings-card p {
+    opacity: .75;
+    margin-bottom: 20px;
+}
+
+.reminder-manager {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.reminder-manager button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 14px;
+    background: var(--primary);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.reminder-manager button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+}
