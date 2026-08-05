@@ -1,7 +1,23 @@
 import ProductivityChart from "../components/ProductivityChart";
+import UpcomingTasks from "../components/UpcomingTasks";
+import PriorityOverview from "../components/PriorityOverview";
+import FocusMessage from "../components/FocusMessage";
 
 function Dashboard({ tasks = [] }) {
   const totalTasks = tasks.length;
+
+  const mediumPriorityTasks = tasks.filter(
+  (task) =>
+    task.priority === "medium" &&
+    !task.completed
+).length;
+
+
+const lowPriorityTasks = tasks.filter(
+  (task) =>
+    task.priority === "low" &&
+    !task.completed
+).length;
 
   const completedTasks = tasks.filter(
     (task) => task.completed
@@ -127,7 +143,9 @@ function Dashboard({ tasks = [] }) {
       <div className="chart-card">
     <ProductivityChart tasks={tasks}/>
 </div>
-
+<UpcomingTasks tasks={tasks}/>
+<PriorityOverview tasks={tasks}/>
+<FocusMessage tasks={tasks}/>
     </div>
   );
 }
