@@ -1,13 +1,21 @@
+/* ==========================
+   SETTINGS PAGE
+========================== */
+
 .settings-page {
     width: 100%;
-    max-width: 1280px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 40px 30px;
 }
 
+
+/* HEADER */
+
 .settings-page h1 {
     color: var(--primary);
     margin-bottom: 10px;
+    font-size: 36px;
 }
 
 .settings-page>p {
@@ -15,23 +23,30 @@
     margin-bottom: 30px;
 }
 
+
+/* SETTINGS CARD */
+
 .settings-card {
     background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 30px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    border-radius: 25px;
+    padding: 35px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, .08);
 }
 
 .settings-card h2 {
     color: var(--primary);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-size: 24px;
 }
 
 .settings-card p {
     opacity: .75;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
+
+
+/* REMINDER BUTTON */
 
 .reminder-manager {
     display: flex;
@@ -40,9 +55,9 @@
 }
 
 .reminder-manager button {
-    padding: 12px 25px;
+    padding: 12px 28px;
     border: none;
-    border-radius: 14px;
+    border-radius: 16px;
     background: var(--primary);
     color: white;
     font-size: 15px;
@@ -54,4 +69,30 @@
 .reminder-manager button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px) {
+    .settings-page {
+        padding: 25px 15px;
+    }
+    .settings-page h1 {
+        font-size: 28px;
+    }
+    .settings-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+    .settings-card h2 {
+        font-size: 20px;
+    }
+    .reminder-manager {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .reminder-manager button {
+        width: 100%;
+    }
 }
