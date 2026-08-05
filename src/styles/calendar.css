@@ -123,3 +123,42 @@
     opacity: .7;
     margin-top: 4px;
 }
+
+.calendar-add-task {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 16px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.calendar-add-task:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+}
+
+.cancel-button {
+    margin-top: 12px;
+    width: auto;
+    min-width: 120px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--primary);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.cancel-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
