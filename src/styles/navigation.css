@@ -193,6 +193,22 @@
     transform: translateY(-2px);
 }
 
+
+/* Hide mobile floating account button on desktop */
+
+.mobile-account {
+    display: none;
+}
+
+
+/* Show only on mobile */
+
+@media (max-width: 600px) {
+    .mobile-account {
+        display: block;
+    }
+}
+
 .mobile-account {
     position: fixed;
     right: 20px;
