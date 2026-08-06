@@ -129,12 +129,17 @@ setNotes("");
 
       </div>
       {/* NEW: Due Time */}
-<input
-  className="task-input"
-  type="time"
-  value={dueTime}
-  onChange={(e) => setDueTime(e.target.value)}
-/>
+<div className="time-input-wrapper">
+  <span className="time-label">⏰ Due Time</span>
+
+  <input
+    className="task-input time-input"
+    type="time"
+    value={dueTime}
+    onChange={(e) => setDueTime(e.target.value)}
+    onClick={(e) => e.currentTarget.showPicker()}
+  />
+</div>
 
 {/* NEW: Reminder */}
 <select
