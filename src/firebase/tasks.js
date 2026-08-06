@@ -12,6 +12,21 @@ import {
 import { db } from "./config";
 
 // Add a new task
+
+export async function deleteAllTasks(userId) {
+    const q = query(
+        collection(db, "tasks"),
+        where("userId", "==", userId)
+    );
+
+    const snapshot = await getDocs(q);
+
+    const deletePromises = snapshot.docs.map((document) =>
+        deleteDoc(doc(db, "tasks", document.id))
+    );
+
+    await Promise.all(deletePromises);
+}
 export async function addTask(userId, task) {
 
     const docRef = await addDoc(
