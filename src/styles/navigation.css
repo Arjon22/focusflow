@@ -120,3 +120,75 @@
         width: 100%;
     }
 }
+
+
+/* ==========================
+   ACCOUNT SECTION
+========================== */
+
+.sidebar-account {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.user-photo {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-info strong {
+    color: white;
+    font-size: 14px;
+}
+
+.user-info small {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.login-btn,
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.login-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.logout-btn {
+    background: #ef5350;
+    color: white;
+}
+
+.login-btn:hover,
+.logout-btn:hover {
+    transform: translateY(-2px);
+}
