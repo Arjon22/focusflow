@@ -39,6 +39,18 @@ function Dashboard({ tasks = [] }) {
     task.priority === "high" &&
     !task.completed
 ).length;
+  const mediumPriorityTasks = tasks.filter(
+  (task) =>
+    task.priority === "medium" &&
+    !task.completed
+).length;
+
+
+const lowPriorityTasks = tasks.filter(
+  (task) =>
+    task.priority === "low" &&
+    !task.completed
+).length;
 
   const hour = new Date().getHours();
 
@@ -156,6 +168,28 @@ function Dashboard({ tasks = [] }) {
     <h2>{highPriorityTasks}</h2>
     <small>Important tasks first</small>
   </div>
+  <div className="dashboard-card">
+  <div className="card-top">
+    <div className="card-icon priority">🟡</div>
+    <div className="card-label">Medium Priority</div>
+  </div>
+
+  <h2>{mediumPriorityTasks}</h2>
+
+  <small>Regular tasks to complete</small>
+</div>
+
+
+<div className="dashboard-card">
+  <div className="card-top">
+    <div className="card-icon priority">🟢</div>
+    <div className="card-label">Low Priority</div>
+  </div>
+
+  <h2>{lowPriorityTasks}</h2>
+
+  <small>Less urgent tasks</small>
+</div>
 
 </div>
 
