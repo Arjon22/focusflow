@@ -76,6 +76,15 @@
     box-shadow: 0 0 0 4px rgba(46, 125, 50, .15);
 }
 
+.notes-input {
+    height: 120px;
+    min-height: 120px;
+    padding: 18px 22px;
+    line-height: 1.5;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
 .add-button {
     width: 100%;
     height: 55px;
@@ -742,4 +751,12 @@ EMPTY STATE
     .stat-card span {
         font-size: 14px !important;
     }
+}
+
+.notes-input {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+    padding: 14px 16px;
+    box-sizing: border-box;
 }
