@@ -69,11 +69,20 @@ function TaskStats({
 
 
       <button
-        className="delete-all-btn"
-        onClick={onDeleteAllTasks}
-      >
-        🗑 Delete All Tasks
-      </button>
+  type="button"
+  className="delete-all-btn"
+  onClick={() => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete all tasks?"
+    );
+
+    if (confirmDelete) {
+      onDeleteAllTasks();
+    }
+  }}
+>
+  Delete All Tasks
+</button>
 
 
 
