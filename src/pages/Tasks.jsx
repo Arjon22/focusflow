@@ -163,6 +163,7 @@ function Tasks({
 
 
         <TaskForm
+        key={editingTask?.firestoreId || editingTask?.id || "new"}
   onAddTask={onAddTask}
   editingTask={editingTask}
   onUpdateTask={onUpdateTask}
