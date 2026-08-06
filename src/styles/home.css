@@ -255,3 +255,55 @@
     z-index: 2;
     pointer-events: none;
 }
+
+.features-section {
+    margin-top: 70px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title h2 {
+    color: var(--primary);
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.section-title p {
+    color: var(--soft-text);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, .65);
+    backdrop-filter: blur(18px);
+    border-radius: 26px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, .08);
+    transition: .3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+}
+
+.feature-card span {
+    font-size: 40px;
+}
+
+.feature-card h3 {
+    margin: 15px 0;
+    color: var(--primary);
+}
+
+.feature-card p {
+    color: var(--soft-text);
+}
