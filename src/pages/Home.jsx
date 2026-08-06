@@ -26,8 +26,8 @@ const completionRate =
         <div className="hero-content">
 
           <span className="hero-tag">
-            🌿 Productivity Reimagined
-          </span>
+  🌿 Productivity Reimagined • Focus Better
+</span>
 
           <h1>
             Focus on what
