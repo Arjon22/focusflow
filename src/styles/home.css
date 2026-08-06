@@ -307,3 +307,23 @@
 .feature-card p {
     color: var(--soft-text);
 }
+
+
+/* ==========================
+   FEATURES RESPONSIVE
+========================== */
+
+@media (max-width:900px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width:600px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    .home-page {
+        padding: 40px 15px;
+    }
+}
