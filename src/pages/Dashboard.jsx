@@ -7,18 +7,6 @@ import { useState } from "react";
 function Dashboard({ tasks = [] }) {
   const totalTasks = tasks.length;
 
-  const mediumPriorityTasks = tasks.filter(
-  (task) =>
-    task.priority === "medium" &&
-    !task.completed
-).length;
-
-
-const lowPriorityTasks = tasks.filter(
-  (task) =>
-    task.priority === "low" &&
-    !task.completed
-).length;
 
   const completedTasks = tasks.filter(
     (task) => task.completed
@@ -47,10 +35,10 @@ const lowPriorityTasks = tasks.filter(
   ).length;
 
   const highPriorityTasks = tasks.filter(
-    (task) =>
-      task.priority === "high" &&
-      !task.completed
-  ).length;
+  (task) =>
+    task.priority === "high" &&
+    !task.completed
+).length;
 
   const hour = new Date().getHours();
 
@@ -78,76 +66,99 @@ const lowPriorityTasks = tasks.filter(
 
       {/* HERO */}
 
-      <div className="dashboard-hero">
+      {/* HERO */}
 
-        <div className="hero-left">
+<div className="dashboard-hero">
 
-          <h1>🌿 Focus Dashboard</h1>
+  <div className="hero-text">
 
-          <h2>{greeting}</h2>
+    <span className="hero-badge">
+      🌿 FocusFlow Dashboard
+    </span>
 
-          <p>{message}</p>
+    <h1>{greeting}</h1>
 
-        </div>
+    <p>{message}</p>
 
-        <div className="hero-right">
+  </div>
 
-          <div className="hero-circle">
+  <div className="hero-progress">
 
-            <h1>{completionRate}%</h1>
+    <div
+  className="progress-ring"
+  style={{ "--progress": completionRate }}
+>
 
-            <span>Completed</span>
+      <span>{completionRate}%</span>
 
-          </div>
+      <small>Completed</small>
 
-        </div>
+    </div>
 
-      </div>
+  </div>
+
+</div>
 
       {/* STATS */}
 
       <div className="dashboard-grid">
 
-        <div className="dashboard-card">
-          <strong>{totalTasks}</strong>
-          <span>Total Tasks</span>
-        </div>
+  <div className="dashboard-card">
+    <div className="card-top">
+      <div className="card-icon total">📋</div>
+      <div className="card-label">Total Tasks</div>
+    </div>
+    <h2>{totalTasks}</h2>
+    <small>Everything you've planned</small>
+  </div>
 
-        <div className="dashboard-card">
-          <strong>{completedTasks}</strong>
-          <span>Completed</span>
-        </div>
+  <div className="dashboard-card">
+    <div className="card-top">
+      <div className="card-icon completed">✅</div>
+      <div className="card-label">Completed</div>
+    </div>
+    <h2>{completedTasks}</h2>
+    <small>Tasks finished successfully</small>
+  </div>
 
-        <div className="dashboard-card">
-          <strong>{completionRate}%</strong>
-          <span>Progress Rate</span>
-        </div>
+  <div className="dashboard-card">
+    <div className="card-top">
+      <div className="card-icon progress">📈</div>
+      <div className="card-label">Progress</div>
+    </div>
+    <h2>{completionRate}%</h2>
+    <small>Overall completion rate</small>
+  </div>
 
-        <div className="dashboard-card">
-          <strong>{todayTasks}</strong>
-          <span>Today's Tasks</span>
-        </div>
+  <div className="dashboard-card">
+    <div className="card-top">
+      <div className="card-icon today">📅</div>
+      <div className="card-label">Today's Tasks</div>
+    </div>
+    <h2>{todayTasks}</h2>
+    <small>Due today</small>
+  </div>
 
-        <div className="dashboard-card">
-          <strong>{overdueTasks}</strong>
-          <span>Overdue</span>
-        </div>
+  <div className="dashboard-card">
+    <div className="card-top">
+      <div className="card-icon overdue">⏰</div>
+      <div className="card-label">Overdue</div>
+    </div>
+    <h2>{overdueTasks}</h2>
+    <small>Need your attention</small>
+  </div>
 
-        <div className="dashboard-card">
-          <strong>{highPriorityTasks}</strong>
-          <span>High Priority</span>
-        </div>
-        <div className="dashboard-card">
-  <strong>{mediumPriorityTasks}</strong>
-  <span>Medium Priority</span>
+  <div className="dashboard-card">
+    <div className="card-top">
+      <div className="card-icon priority">🔥</div>
+      <div className="card-label">High Priority</div>
+    </div>
+    <h2>{highPriorityTasks}</h2>
+    <small>Important tasks first</small>
+  </div>
+
 </div>
 
-<div className="dashboard-card">
-  <strong>{lowPriorityTasks}</strong>
-  <span>Low Priority</span>
-</div>
-
-      </div>
 
       {/* PRODUCTIVITY */}
 
