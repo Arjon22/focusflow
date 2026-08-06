@@ -2,32 +2,42 @@ import { Link } from "react-router-dom";
 import HeroImage from "../assets/hero-illustration.jpg";
 
 function Home({ tasks }) {
+
   const totalTasks = tasks.length;
 
-const completedTasks =
-  tasks.filter((task) => task.completed).length;
+  const completedTasks =
+    tasks.filter((task) => task.completed).length;
 
-const pendingTasks =
-  totalTasks - completedTasks;
+  const pendingTasks =
+    totalTasks - completedTasks;
 
-const completionRate =
-  totalTasks === 0
-    ? 0
-    : Math.round(
-        (completedTasks / totalTasks) * 100
-      );
+  const completionRate =
+    totalTasks === 0
+      ? 0
+      : Math.round(
+          (completedTasks / totalTasks) * 100
+        );
+
+
   return (
+
     <div className="home-page">
 
-      {/* Hero Section */}
+
+      {/* ==========================
+          HERO SECTION
+      ========================== */}
 
       <section className="hero">
 
+
         <div className="hero-content">
 
+
           <span className="hero-tag">
-  🌿 Productivity Reimagined • Focus Better
-</span>
+            🌿 Productivity Reimagined
+          </span>
+
 
           <h1>
             Focus on what
@@ -35,86 +45,261 @@ const completionRate =
             truly matters.
           </h1>
 
+
           <p>
             Organize your tasks, manage your time,
             and build better habits with one clean,
             beautiful workspace.
           </p>
 
+
+
           <div className="hero-buttons">
+
 
             <Link
               to="/tasks"
               className="primary-btn"
             >
-              Get Started
+              🚀 Get Started
             </Link>
+
+
 
             <Link
               to="/dashboard"
               className="secondary-btn"
             >
-              View Dashboard
+              📊 Dashboard
             </Link>
+
 
           </div>
 
+
         </div>
 
+
+
+
         <div className="hero-image">
-  <img
-    src={HeroImage}
-    alt="FocusFlow Hero"
-  />
-</div>
+
+          <img
+            src={HeroImage}
+            alt="FocusFlow Hero"
+          />
+
+        </div>
+
+
 
       </section>
+
+
+
+
+
+      {/* ==========================
+          STATISTICS
+      ========================== */}
+
+
       <section className="stats-section">
 
-  <div className="stat-card">
 
-    <span>📋</span>
+        <div className="stat-card">
 
-    <h2>{totalTasks}</h2>
+          <span>📋</span>
 
-    <p>Total Tasks</p>
+          <h2>
+            {totalTasks}
+          </h2>
 
-  </div>
+          <p>
+            Total Tasks
+          </p>
 
-  <div className="stat-card">
+        </div>
 
-    <span>✅</span>
 
-    <h2>{completedTasks}</h2>
 
-    <p>Completed</p>
+        <div className="stat-card">
 
-  </div>
+          <span>✅</span>
 
-  <div className="stat-card">
+          <h2>
+            {completedTasks}
+          </h2>
 
-    <span>⏳</span>
+          <p>
+            Completed
+          </p>
 
-    <h2>{pendingTasks}</h2>
+        </div>
 
-    <p>Pending</p>
 
-  </div>
 
-  <div className="stat-card">
+        <div className="stat-card">
 
-    <span>📈</span>
+          <span>⏳</span>
 
-    <h2>{completionRate}%</h2>
+          <h2>
+            {pendingTasks}
+          </h2>
 
-    <p>Progress</p>
+          <p>
+            Pending
+          </p>
 
-  </div>
+        </div>
 
-</section>
+
+
+        <div className="stat-card">
+
+          <span>📈</span>
+
+          <h2>
+            {completionRate}%
+          </h2>
+
+          <p>
+            Progress
+          </p>
+
+        </div>
+
+
+      </section>
+
+
+
+
+
+
+      {/* ==========================
+          FEATURES
+      ========================== */}
+
+
+
+      <section className="features-section">
+
+
+        <div className="section-title">
+
+
+          <h2>
+            ✨ Why FocusFlow?
+          </h2>
+
+
+          <p>
+            Everything you need to stay productive
+            in one simple and beautiful workspace.
+          </p>
+
+
+        </div>
+
+
+
+
+
+        <div className="features-grid">
+
+
+          <div className="feature-card">
+
+            <span>
+              ⚡
+            </span>
+
+            <h3>
+              Fast & Lightweight
+            </h3>
+
+            <p>
+              Instant performance with local storage.
+            </p>
+
+          </div>
+
+
+
+
+
+          <div className="feature-card">
+
+            <span>
+              📅
+            </span>
+
+            <h3>
+              Smart Calendar
+            </h3>
+
+            <p>
+              Plan your schedule with ease.
+            </p>
+
+          </div>
+
+
+
+
+
+          <div className="feature-card">
+
+            <span>
+              🔔
+            </span>
+
+            <h3>
+              Task Reminders
+            </h3>
+
+            <p>
+              Never miss important deadlines.
+            </p>
+
+          </div>
+
+
+
+
+
+          <div className="feature-card">
+
+            <span>
+              📊
+            </span>
+
+            <h3>
+              Productivity Insights
+            </h3>
+
+            <p>
+              Track your progress every day.
+            </p>
+
+          </div>
+
+
+
+        </div>
+
+
+
+      </section>
+
+
 
     </div>
+
   );
+
 }
+
 
 export default Home;
