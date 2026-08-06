@@ -2,9 +2,12 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { loginWithGoogle, logout } from "../firebase/auth";
 import { syncLocalTasks } from "../firebase/syncTasks";
+import { useState } from "react";
 
 function Navbar() {
   const { user } = useAuth();
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  
   const handleLogin = async () => {
   try {
 
@@ -25,7 +28,10 @@ function Navbar() {
 
  const handleLogout = async () => {
   try {
+
     await logout();
+
+    localStorage.removeItem("tasks");
 
     window.location.reload();
 
@@ -103,13 +109,72 @@ function Navbar() {
       </nav>
 
       {/* Mobile Bottom Navbar */}
-      <nav className="mobile-navbar">
-        <NavLink to="/">🏠</NavLink>
-        <NavLink to="/dashboard">📊</NavLink>
-        <NavLink to="/tasks">✅</NavLink>
-        <NavLink to="/calendar">📅</NavLink>
-        <NavLink to="/settings">⚙️</NavLink>
-      </nav>
+<nav className="mobile-navbar">
+
+  <NavLink to="/">🏠</NavLink>
+
+  <NavLink to="/dashboard">📊</NavLink>
+
+  <NavLink to="/tasks">✅</NavLink>
+
+  <NavLink to="/calendar">📅</NavLink>
+
+  <NavLink to="/settings">⚙️</NavLink>
+
+</nav>
+
+
+{/* Floating Account Button */}
+<div className="mobile-account">
+
+  <button
+    className="account-float-btn"
+    onClick={() => setShowAccountMenu(!showAccountMenu)}
+  >
+    {user?.photoURL ? (
+      <img
+        src={user.photoURL}
+        alt="profile"
+      />
+    ) : (
+      "👤"
+    )}
+  </button>
+
+
+  {showAccountMenu && (
+    <div className="account-popup">
+
+      {user ? (
+        <>
+          <div className="popup-user">
+            <strong>
+              {user.displayName}
+            </strong>
+
+            <small>
+              {user.email}
+            </small>
+          </div>
+
+          <button
+            onClick={handleLogout}
+          >
+            🚪 Logout
+          </button>
+        </>
+      ) : (
+        <button
+          onClick={handleLogin}
+        >
+          🔐 Sign in with Google
+        </button>
+      )}
+
+    </div>
+  )}
+
+</div>
     </>
   );
 }
