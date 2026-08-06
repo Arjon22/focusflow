@@ -1,0 +1,137 @@
+body {
+    font-family: "Inter", Arial, sans-serif;
+    background: radial-gradient( circle at top left, rgba(129, 199, 132, .35), transparent 35%), radial-gradient( circle at bottom right, rgba(76, 175, 80, .25), transparent 35%), linear-gradient( 135deg, #f1f8f2, #e8f5e9);
+    color: var(--text);
+    padding-top: 80px;
+    padding-bottom: 90px;
+    min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    top: 80px;
+    left: -120px;
+    border-radius: 50%;
+    background: rgba(76, 175, 80, .12);
+    filter: blur(80px);
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    bottom: 50px;
+    right: -100px;
+    border-radius: 50%;
+    background: rgba(129, 199, 132, .18);
+    filter: blur(80px);
+    z-index: -1;
+}
+
+.main-content {
+    animation: pageEnter .45s ease;
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+button,
+.primary-btn,
+.secondary-btn {
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+button:active,
+.primary-btn:active,
+.secondary-btn:active {
+    transform: scale(.96);
+}
+
+@media(max-width:700px) {
+    .dashboard-card,
+    .chart-card,
+    .upcoming-card,
+    .priority-card,
+    .focus-card,
+    .settings-card,
+    .calendar-container {
+        border-radius: 22px;
+        padding: 22px;
+    }
+    h1 {
+        letter-spacing: -.5px;
+    }
+}
+
+.empty-text,
+.selected-date-panel p {
+    padding: 25px;
+    text-align: center;
+    color: var(--soft-text);
+    background: rgba(255, 255, 255, .45);
+    border-radius: 18px;
+    font-size: 15px;
+}
+
+.dashboard-card:nth-child(1) {
+    animation-delay: .05s;
+}
+
+.dashboard-card:nth-child(2) {
+    animation-delay: .1s;
+}
+
+.dashboard-card:nth-child(3) {
+    animation-delay: .15s;
+}
+
+.dashboard-card:nth-child(4) {
+    animation-delay: .2s;
+}
+
+.dashboard-card:nth-child(5) {
+    animation-delay: .25s;
+}
+
+.dashboard-card:nth-child(6) {
+    animation-delay: .3s;
+}
+
+.dashboard>*,
+.dashboard-card {
+    animation: dashboardFade .6s ease both;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+::selection {
+    background: #81c784;
+    color: white;
+}
+
+img {
+    user-select: none;
+}
+
+img {
+    transition: .4s ease;
+}
+
+img:hover {
+    transform: scale(1.03);
+}
