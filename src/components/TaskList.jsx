@@ -65,8 +65,7 @@ function TaskList({
         const status = getTaskStatus(task.dueDate);
 
         return (
-          <li
-            key={task.id}
+          <li key={task.firestoreId || task.id}
             className={`task-card ${
               task.completed ? "completed" : ""
             } fade-in`}

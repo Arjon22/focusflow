@@ -1,5 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  updateTask as updateTaskInFirestore,
+  deleteTask as deleteTaskFromFirestore
+} from "./firebase/tasks";
+import { auth } from "./firebase/auth";
 
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
@@ -20,30 +25,15 @@ import "./styles/calendar.css";
 import "./styles/navigation.css";
 import "./styles/settings.css";
 
+import useTasks from "./hooks/useTasks";
+
 
 function App() {
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem("tasks");
-
-    if (!savedTasks) {
-      return [];
-    }
-
-    return JSON.parse(savedTasks).map((task) => ({
-  ...task,
-
-  priority: task.priority || "medium",
-
-  dueDate: task.dueDate || "",
-  dueTime: task.dueTime || "",
-
-  reminder: task.reminder || "none",
-
-  repeat: task.repeat || "none",
-
-  notes: task.notes || "",
-}));
-  });
+  const {
+  tasks,
+  setTasks,
+  handleAddTask,
+} = useTasks();
 
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingText, setEditingText] = useState("");
@@ -52,52 +42,6 @@ function App() {
   const [sortBy, setSortBy] = useState("due-date");
   const [searchDate, setSearchDate] = useState("");
 
-  const handleAddTask = (
-  taskTitle,
-  priority,
-  dueDate,
-  dueTime,
-  reminder,
-  repeat,
-  notes
-) => {
-    const trimmedTitle = taskTitle.trim();
-
-    if (!trimmedTitle) {
-      alert("Task cannot be empty.");
-      return;
-    }
-
-    const taskExists = tasks.some(
-      (task) =>
-        task.title.trim().toLowerCase() ===
-        trimmedTitle.toLowerCase()
-    );
-
-    if (taskExists) {
-      alert(`"${trimmedTitle}" already exists.`);
-      return;
-    }
-
-    const newTask = {
-  id: Date.now(),
-  title: trimmedTitle,
-  completed: false,
-
-  priority: priority || "medium",
-
-  dueDate: dueDate || "",
-  dueTime: dueTime || "",
-
-  reminder: reminder || "none",
-
-  repeat: repeat || "none",
-
-  notes: notes || "",
-};
-
-    setTasks([...tasks, newTask]);
-  };
 
   const handleEditClick = (id) => {
     const task = tasks.find((task) => task.id === id);
@@ -106,49 +50,124 @@ function App() {
     setEditingText(task.title);
   };
 
-  const handleSaveEdit = () => {
-    const trimmedTitle = editingText.trim();
+  const handleSaveEdit = async () => {
 
-    if (!trimmedTitle) {
-      alert("Task cannot be empty.");
-      return;
+  const trimmedTitle = editingText.trim();
+
+  if (!trimmedTitle) {
+    alert("Task cannot be empty.");
+    return;
+  }
+
+
+  const taskExists = tasks.some(
+    (task) =>
+      task.id !== editingTaskId &&
+      task.title.trim().toLowerCase() ===
+      trimmedTitle.toLowerCase()
+  );
+
+
+  if (taskExists) {
+    alert(`"${trimmedTitle}" already exists.`);
+    return;
+  }
+
+
+  const task = tasks.find(
+    (task) => task.id === editingTaskId
+  );
+
+
+  const updatedTasks = tasks.map((task) =>
+    task.id === editingTaskId
+      ? {
+          ...task,
+          title: trimmedTitle,
+        }
+      : task
+  );
+
+
+  setTasks(updatedTasks);
+
+
+  if (
+    auth.currentUser &&
+    task?.firestoreId
+  ) {
+
+    try {
+
+      await updateTaskInFirestore(
+        task.firestoreId,
+        {
+          title: trimmedTitle,
+        }
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Update failed:",
+        error
+      );
+
     }
 
-    const taskExists = tasks.some(
-      (task) =>
-        task.id !== editingTaskId &&
-        task.title.trim().toLowerCase() ===
-          trimmedTitle.toLowerCase()
-    );
+  }
 
-    if (taskExists) {
-      alert(`"${trimmedTitle}" already exists.`);
-      return;
-    }
 
-    const updatedTasks = tasks.map((task) =>
-      task.id === editingTaskId
-        ? { ...task, title: trimmedTitle }
-        : task
-    );
+  setEditingTaskId(null);
+  setEditingText("");
 
-    setTasks(updatedTasks);
-    setEditingTaskId(null);
-    setEditingText("");
-  };
+};
 
   const handleCancelEdit = () => {
     setEditingTaskId(null);
     setEditingText("");
   };
 
-  const handleDeleteTask = (id) => {
-    const updatedTasks = tasks.filter(
-      (task) => task.id !== id
-    );
+  const handleDeleteTask = async (id) => {
 
-    setTasks(updatedTasks);
-  };
+  const task = tasks.find(
+    (task) => task.id === id
+  );
+  console.log("Deleting task:", task);
+
+
+
+  const updatedTasks = tasks.filter(
+    (task) => task.id !== id
+  );
+
+
+  setTasks(updatedTasks);
+
+
+  if (
+    auth.currentUser &&
+    task?.firestoreId
+  ) {
+
+    try {
+
+      await deleteTaskFromFirestore(
+        task.firestoreId
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Delete failed:",
+        error
+      );
+
+    }
+
+  }
+
+};
 
   const handleDeleteAllTasks = () => {
     if (tasks.length === 0) {
@@ -165,25 +184,59 @@ function App() {
     }
   };
 
-  const handleToggleTask = (id) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id
-        ? {
-            ...task,
-            completed: !task.completed,
-          }
-        : task
-    );
+  const handleToggleTask = async (id) => {
 
-    setTasks(updatedTasks);
-  };
+  const task = tasks.find(
+    (task) => task.id === id
+  );
 
-  useEffect(() => {
-    localStorage.setItem(
-      "tasks",
-      JSON.stringify(tasks)
-    );
-  }, [tasks]);
+
+  if (!task) return;
+
+
+  const updatedStatus = !task.completed;
+
+
+  const updatedTasks = tasks.map((task) =>
+    task.id === id
+      ? {
+          ...task,
+          completed: updatedStatus,
+        }
+      : task
+  );
+
+
+  setTasks(updatedTasks);
+
+
+  if (
+    auth.currentUser &&
+    task.firestoreId
+  ) {
+
+    try {
+
+      await updateTaskInFirestore(
+        task.firestoreId,
+        {
+          completed: updatedStatus,
+        }
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Toggle update failed:",
+        error
+      );
+
+    }
+
+  }
+
+};
 
   const filteredTasks = tasks
     .filter((task) => {
@@ -323,11 +376,12 @@ sortedTasks.sort((a, b) => {
     
 
     <Routes>
-
       <Route
   path="/"
   element={<Home tasks={tasks} />}
 />
+
+      
 
       <Route
         path="/dashboard"
@@ -335,33 +389,32 @@ sortedTasks.sort((a, b) => {
       />
 
       <Route
-        path="/tasks"
-        element={
-          <Tasks
-            tasks={sortedTasks}
-            allTasks={tasks}
-            onAddTask={handleAddTask}
-            onToggleTask={handleToggleTask}
-            onEditClick={handleEditClick}
-            editingTaskId={editingTaskId}
-            editingText={editingText}
-            setEditingText={setEditingText}
-            onSaveEdit={handleSaveEdit}
-            onDeleteTask={handleDeleteTask}
-            onCancelEdit={handleCancelEdit}
-            onDeleteAllTasks={handleDeleteAllTasks}
-            filter={filter}
-            setFilter={setFilter}
-            search={search}
-            setSearch={setSearch}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-            searchDate={searchDate}
-            setSearchDate={setSearchDate}
-          />
-        }
-      />
-
+  path="/tasks"
+  element={
+    <Tasks
+      tasks={sortedTasks}
+      allTasks={tasks}
+      onAddTask={handleAddTask}
+      onToggleTask={handleToggleTask}
+      onEditClick={handleEditClick}
+      editingTaskId={editingTaskId}
+      editingText={editingText}
+      setEditingText={setEditingText}
+      onSaveEdit={handleSaveEdit}
+      onDeleteTask={handleDeleteTask}
+      onCancelEdit={handleCancelEdit}
+      onDeleteAllTasks={handleDeleteAllTasks}
+      filter={filter}
+      setFilter={setFilter}
+      search={search}
+      setSearch={setSearch}
+      sortBy={sortBy}
+      setSortBy={setSortBy}
+      searchDate={searchDate}
+      setSearchDate={setSearchDate}
+    />
+  }
+/>
      <Route
   path="/calendar"
   element={
