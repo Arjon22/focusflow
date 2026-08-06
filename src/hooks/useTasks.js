@@ -1,203 +1,158 @@
-import { useState, useEffect } from "react";
-
-import { auth } from "../firebase/auth";
+import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 
+import { auth } from "../firebase/auth";
+
 import {
-    addTask as addTaskToFirestore,
     getTasks,
+    addTask,
+    updateTask,
+    deleteTask,
+    deleteAllTasks,
 } from "../firebase/tasks";
 
-
 export default function useTasks() {
+    const [user, setUser] = useState(null);
+    const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const [tasks, setTasks] = useState(() => {
+    // ------------------------
+    // Load Tasks
+    // ------------------------
 
-        const savedTasks = localStorage.getItem("tasks");
+    const loadTasks = async(uid) => {
+        setLoading(true);
 
-        if (!savedTasks) {
-            return [];
+        try {
+            const data = await getTasks(uid);
+            setTasks(data);
+        } catch (err) {
+            console.error("Failed to load tasks:", err);
         }
 
-        return JSON.parse(savedTasks).map((task) => ({
-            ...task,
-            priority: task.priority || "medium",
-            dueDate: task.dueDate || "",
-            dueTime: task.dueTime || "",
-            reminder: task.reminder || "none",
-            repeat: task.repeat || "none",
-            notes: task.notes || "",
-        }));
+        setLoading(false);
+    };
 
-    });
+    const removeAllTasks = async() => {
+        if (!user) return;
 
+        try {
+            await deleteAllTasks(user.uid);
+            setTasks([]);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
-    // Save tasks locally
+    // ------------------------
+    // Auth Listener
+    // ------------------------
+
     useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async(currentUser) => {
+            setUser(currentUser);
 
-        localStorage.setItem(
-            "tasks",
-            JSON.stringify(tasks)
-        );
-
-    }, [tasks]);
-
-
-
-    // Load Firestore tasks after login
-    useEffect(() => {
-
-        const unsubscribe = onAuthStateChanged(
-            auth,
-            async(user) => {
-
-                if (!user) {
-                    return;
-                }
-
-                try {
-
-                    const firestoreTasks = await getTasks(user.uid);
-
-
-                    setTasks((currentTasks) => {
-
-                        const mergedTasks = [
-                            ...firestoreTasks,
-                            ...currentTasks.filter(
-                                localTask =>
-                                !firestoreTasks.some(
-                                    cloudTask =>
-                                    cloudTask.title.toLowerCase() ===
-                                    localTask.title.toLowerCase()
-                                )
-                            )
-                        ];
-
-
-                        return mergedTasks;
-
-                    });
-
-                } catch (error) {
-
-                    console.error(
-                        "Failed to load tasks:",
-                        error
-                    );
-
-                }
-
+            if (currentUser) {
+                await loadTasks(currentUser.uid);
+            } else {
+                setTasks([]);
+                setLoading(false);
             }
-        );
+        });
 
-
-        return () => unsubscribe();
-
+        return unsubscribe;
     }, []);
 
+    // ------------------------
+    // Add Task
+    // ------------------------
 
+    const createTask = async(task) => {
+        if (!user) return;
 
-    const handleAddTask = (
-        taskTitle,
-        priority,
-        dueDate,
-        dueTime,
-        reminder,
-        repeat,
-        notes
-    ) => {
+        try {
+            const id = await addTask(user.uid, task);
 
-        const trimmedTitle = taskTitle.trim();
+            setTasks((prev) => [
+                ...prev,
+                {
+                    ...task,
+                    firestoreId: id,
+                },
+            ]);
 
-
-        if (!trimmedTitle) {
-            alert("Task cannot be empty.");
-            return;
+        } catch (err) {
+            console.error(err);
         }
-
-
-        const taskExists = tasks.some(
-            (task) =>
-            task.title.trim().toLowerCase() ===
-            trimmedTitle.toLowerCase()
-        );
-
-
-        if (taskExists) {
-            alert(`"${trimmedTitle}" already exists.`);
-            return;
-        }
-
-
-        const newTask = {
-
-            id: Date.now(),
-
-            title: trimmedTitle,
-
-            completed: false,
-
-            priority: priority || "medium",
-
-            dueDate: dueDate || "",
-
-            dueTime: dueTime || "",
-
-            reminder: reminder || "none",
-
-            repeat: repeat || "none",
-
-            notes: notes || "",
-
-        };
-
-
-        // Update UI immediately
-        setTasks((prevTasks) => [
-            ...prevTasks,
-            newTask,
-        ]);
-
-
-
-        // Save to Firestore if logged in
-        if (auth.currentUser) {
-
-            addTaskToFirestore(
-                    auth.currentUser.uid,
-                    newTask
-                )
-                .then((firestoreId) => {
-                    console.log("Firestore ID:", firestoreId);
-
-
-                    setTasks((prevTasks) =>
-                        prevTasks.map((task) =>
-                            task.id === newTask.id ? {
-                                ...task,
-                                firestoreId,
-                            } :
-                            task
-                        )
-                    );
-
-                })
-                .catch(console.error);
-
-        }
-
     };
 
+    // ------------------------
+    // Update Task
+    // ------------------------
+
+    const editTask = async(id, updates) => {
+        if (!user) return;
+
+        try {
+            await updateTask(id, updates);
+
+            setTasks((prev) =>
+                prev.map((task) =>
+                    task.firestoreId === id ? {
+                        ...task,
+                        ...updates,
+                    } :
+                    task
+                )
+            );
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // ------------------------
+    // Delete Task
+    // ------------------------
+
+    const removeTask = async(id) => {
+        if (!user) return;
+
+        try {
+            await deleteTask(id);
+
+            setTasks((prev) =>
+                prev.filter(
+                    (task) => task.firestoreId !== id
+                )
+            );
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // ------------------------
+    // Toggle Complete
+    // ------------------------
+
+    const toggleTask = async(task) => {
+        await editTask(task.firestoreId, {
+            completed: !task.completed,
+        });
+    };
 
     return {
-
+        user,
         tasks,
+        loading,
 
-        setTasks,
+        addTask: createTask,
+        updateTask: editTask,
+        deleteTask: removeTask,
+        deleteAllTasks: removeAllTasks,
+        toggleTask,
 
-        handleAddTask,
-
+        refresh: () => user && loadTasks(user.uid),
     };
-
 }

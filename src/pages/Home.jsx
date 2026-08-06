@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import HeroImage from "../assets/hero-illustration.jpg";
 
-function Home({ tasks }) {
+function Home({ tasks = [] }) {
 
   const totalTasks = tasks.length;
 
