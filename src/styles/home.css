@@ -230,3 +230,28 @@
         grid-template-columns: 1fr;
     }
 }
+
+.hero-content {
+    flex: 1;
+    position: relative;
+    z-index: 5;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-image::before {
+    pointer-events: none;
+}
+
+.hero-image img {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+}
