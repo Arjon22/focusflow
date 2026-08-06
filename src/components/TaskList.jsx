@@ -259,7 +259,9 @@ function TaskList({
         "Are you sure you want to delete this task?"
       )
     ) {
-      onDeleteTask(task.firestoreId);
+      onDeleteTask(
+  task.firestoreId || task.id
+);
     }
   }}
 >

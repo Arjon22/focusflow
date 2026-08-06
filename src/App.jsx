@@ -106,14 +106,16 @@ function App() {
 
   onDeleteAllTasks={deleteAllTasks}
 
-  onUpdateTask={async (updatedTask) => {
-    await updateTask(
-      updatedTask.firestoreId,
-      updatedTask
-    );
+  onUpdateTask={async(updatedTask)=>{
 
-    setEditingTask(null);
-  }}
+  await updateTask(
+    updatedTask.firestoreId || updatedTask.id,
+    updatedTask
+  );
+
+  setEditingTask(null);
+
+}}
 
   onEditTask={setEditingTask}
 
