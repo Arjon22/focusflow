@@ -35,7 +35,7 @@ function Home({ tasks }) {
 
 
           <span className="hero-tag">
-            🌿 Productivity Reimagined
+            🌿 Productivity Reimagined.
           </span>
 
 
