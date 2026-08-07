@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import toast from "react-hot-toast";
 
 import { auth } from "../firebase/auth";
 
@@ -86,9 +87,49 @@ export default function useTasks() {
 
                     if (currentUser) {
 
-                        await loadTasks(
-                            currentUser.uid
-                        );
+                        const guestTasks =
+                            JSON.parse(
+                                localStorage.getItem("guestTasks") || "[]"
+                            );
+
+                        if (guestTasks.length > 0) {
+
+                            const existingTasks =
+                                await getTasks(currentUser.uid);
+
+                            for (const task of guestTasks) {
+
+                                const alreadyExists =
+                                    existingTasks.some(
+                                        (existing) =>
+                                        (existing.title || "").trim().toLowerCase() ===
+                                        (task.title || "").trim().toLowerCase()
+                                    );
+
+                                if (!alreadyExists) {
+
+                                    await addTask(
+                                        currentUser.uid, {
+                                            title: task.title,
+                                            priority: task.priority,
+                                            dueDate: task.dueDate,
+                                            dueTime: task.dueTime,
+                                            reminder: task.reminder,
+                                            repeat: task.repeat,
+                                            notes: task.notes,
+                                            completed: task.completed,
+                                        }
+                                    );
+
+                                }
+
+                            }
+
+                            localStorage.removeItem("guestTasks");
+
+                        }
+
+                        await loadTasks(currentUser.uid);
 
                     } else {
 
@@ -128,7 +169,6 @@ export default function useTasks() {
 
             };
 
-
             setTasks((prev) => {
 
                 const updated = [
@@ -142,6 +182,7 @@ export default function useTasks() {
 
             });
 
+            toast.success("Task added.");
 
             return;
 
@@ -170,11 +211,13 @@ export default function useTasks() {
                 }
 
             ]);
+            toast.success("Task added.");
 
 
         } catch (err) {
 
             console.error(err);
+            toast.error("Failed to add task.");
 
         }
 
@@ -211,6 +254,7 @@ export default function useTasks() {
 
 
                 saveGuestTasks(updated);
+                toast.success("Task updated.");
 
                 return updated;
 
@@ -249,11 +293,13 @@ export default function useTasks() {
                 )
 
             );
+            toast.success("Task updated.");
 
 
         } catch (err) {
 
             console.error(err);
+            toast.error("Failed to update task.");
 
         }
 
@@ -297,20 +343,19 @@ export default function useTasks() {
 
             await deleteTask(id);
 
-
             setTasks((prev) =>
-
                 prev.filter(
-                    task =>
-                    task.firestoreId !== id
+                    (task) => task.firestoreId !== id
                 )
-
             );
 
+            toast.success("Task deleted.");
 
         } catch (err) {
 
             console.error(err);
+
+            toast.error("Failed to delete task.");
 
         }
 
@@ -332,6 +377,7 @@ export default function useTasks() {
             localStorage.removeItem(
                 "guestTasks"
             );
+            toast.success("All tasks deleted.");
 
             return;
 
@@ -345,11 +391,13 @@ export default function useTasks() {
             );
 
             setTasks([]);
+            toast.success("All tasks deleted.");
 
 
         } catch (err) {
 
             console.error(err);
+            toast.error("Failed to delete all tasks.");
 
         }
 

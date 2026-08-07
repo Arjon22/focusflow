@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "firebase": "^12.17.1",
+    "framer-motion": "^13.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
