@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
+import toast from "react-hot-toast";
 
 function TaskForm({
   onAddTask,
@@ -100,7 +101,7 @@ function TaskForm({
 
 
 if (duplicate) {
-  alert("Task already exists.");
+  toast.error("Task already exists.");
   return;
 }
 
@@ -132,24 +133,20 @@ if (duplicate) {
 
     if (editingTask) {
 
-
-      await onUpdateTask({
-
+    await onUpdateTask({
         ...editingTask,
-
         ...taskData,
+    });
 
-      });
+    
 
+} else {
 
+    await onAddTask(taskData);
 
-    } else {
+    
 
-
-      await onAddTask(taskData);
-
-
-    }
+}
 
 
 
