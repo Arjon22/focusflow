@@ -11,7 +11,38 @@ import {
     deleteTask,
     deleteAllTasks,
 } from "../firebase/tasks";
+const normalizeTask = (task) => {
 
+    const createdAt =
+        task.createdAt ||
+        new Date().toISOString();
+
+    return {
+        ...task,
+
+        priority: task.priority || "medium",
+
+        dueDate: task.dueDate || "",
+
+        dueTime: task.dueTime || "",
+
+        reminder: task.reminder || "none",
+
+        repeat: task.repeat || "none",
+
+        notes: task.notes || "",
+
+        completed: task.completed || false,
+
+        reminded: task.reminded || false,
+
+        createdAt,
+
+        updatedAt: task.updatedAt ||
+            createdAt,
+    };
+
+};
 
 export default function useTasks() {
 
@@ -28,7 +59,7 @@ export default function useTasks() {
         const saved = localStorage.getItem("guestTasks");
 
         if (saved) {
-            setTasks(JSON.parse(saved));
+            setTasks(JSON.parse(saved).map(normalizeTask));
         } else {
             setTasks([]);
         }
@@ -55,7 +86,7 @@ export default function useTasks() {
 
             const data = await getTasks(uid);
 
-            setTasks(data);
+            setTasks(data.map(normalizeTask));
 
         } catch (err) {
 
@@ -159,15 +190,11 @@ export default function useTasks() {
         // Guest Mode
         if (!user) {
 
-            const guestTask = {
-
+            const guestTask = normalizeTask({
                 ...task,
-
                 id: Date.now(),
-
                 firestoreId: null,
-
-            };
+            });
 
             setTasks((prev) => {
 
@@ -205,10 +232,10 @@ export default function useTasks() {
 
                 ...prev,
 
-                {
+                normalizeTask({
                     ...task,
                     firestoreId: id,
-                }
+                })
 
             ]);
             toast.success("Task added.");
@@ -229,7 +256,7 @@ export default function useTasks() {
     // Update Task
     // ------------------------
 
-    const editTask = async(id, updates) => {
+    const editTask = async(id, updates, silent = false) => {
 
 
         if (!user) {
@@ -254,7 +281,9 @@ export default function useTasks() {
 
 
                 saveGuestTasks(updated);
-                toast.success("Task updated.");
+                if (!silent) {
+                    toast.success("Task updated.");
+                }
 
                 return updated;
 
@@ -293,7 +322,9 @@ export default function useTasks() {
                 )
 
             );
-            toast.success("Task updated.");
+            if (!silent) {
+                toast.success("Task updated.");
+            }
 
 
         } catch (err) {
