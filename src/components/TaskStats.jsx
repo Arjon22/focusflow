@@ -1,7 +1,10 @@
+import { useState } from "react";
+import ConfirmModal from "./ConfirmModal";
 function TaskStats({
   tasks = [],
   onDeleteAllTasks
 }) {
+  const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
 
   const total = tasks.length;
 
@@ -21,12 +24,34 @@ function TaskStats({
 
 
   return (
+  <>
+  {showDeleteAllModal && (
+
+      <ConfirmModal
+
+        title="Delete All Tasks?"
+
+        message="This will permanently remove all your tasks."
+
+        onCancel={() =>
+          setShowDeleteAllModal(false)
+        }
+
+        onConfirm={() => {
+
+          onDeleteAllTasks();
+
+          setShowDeleteAllModal(false);
+
+        }}
+
+      />
+
+    )}
 
     <div className="task-stats-container">
 
-
       <div className="stats-cards">
-        
 
 
         <div className="stat-card">
@@ -69,20 +94,13 @@ function TaskStats({
 
 
       <button
-  type="button"
-  className="delete-all-btn"
-  onClick={() => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete all tasks?"
-    );
+        type="button"
+        className="delete-all-btn"
+        onClick={() => setShowDeleteAllModal(true)}
+      >
+        Delete All Tasks
+      </button>
 
-    if (confirmDelete) {
-      onDeleteAllTasks();
-    }
-  }}
->
-  Delete All Tasks
-</button>
 
 
 
@@ -99,7 +117,7 @@ function TaskStats({
           <div
             className="progress-fill"
             style={{
-              width:`${progress}%`
+              width: `${progress}%`
             }}
           />
 
@@ -107,8 +125,8 @@ function TaskStats({
 
 
         <p>
-          {progress}% 
-          <br/>
+          {progress}%
+          <br />
           {completed} completed out of {total} tasks
         </p>
 
@@ -116,10 +134,15 @@ function TaskStats({
       </div>
 
 
-
     </div>
 
-  );
+
+
+    
+
+
+  </>
+);
 
 }
 
