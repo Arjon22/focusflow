@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import ConfirmModal from "./ConfirmModal";
+import formatTime from "../utils/formatTime";
 const getTaskStatus = (dueDate) => {
   if (!dueDate) return null;
 
@@ -204,27 +205,33 @@ const [deleteTaskId, setDeleteTaskId] = useState(null);
 
                 {task.dueDate && (
 
-                  <span className="task-date">
+    <span className="task-date">
 
-                    📅{" "}
+        📅{" "}
 
-                    {
-                      new Date(
-                        task.dueDate
-                      ).toLocaleDateString(
-                        "en-US",
-                        {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        }
-                      )
-                    }
+        {
+            new Date(
+                task.dueDate
+            ).toLocaleDateString(
+                "en-US",
+                {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                }
+            )
+        }
 
 
-                  </span>
+        {task.dueTime && (
+            <>
+                {" "}⏰ {formatTime(task.dueTime)}
+            </>
+        )}
 
-                )}
+    </span>
+
+)}
 
 
 
