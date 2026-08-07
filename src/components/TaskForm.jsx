@@ -107,8 +107,9 @@ if (duplicate) {
 
 
 
-    const taskData = {
+    const now = new Date().toISOString();
 
+const taskData = {
   title: task.trim(),
 
   priority,
@@ -127,8 +128,16 @@ if (duplicate) {
     ? editingTask.completed
     : false,
 
-};
+  reminded: editingTask
+    ? editingTask.reminded
+    : false,
 
+  createdAt: editingTask
+    ? editingTask.createdAt
+    : now,
+
+  updatedAt: now,
+};
 
 
     if (editingTask) {

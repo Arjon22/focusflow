@@ -90,7 +90,10 @@ function App() {
       <main className="main-content">
 
 
-        <ReminderChecker tasks={tasks} />
+        <ReminderChecker
+    tasks={tasks}
+    onReminderUpdate={updateTask}
+/>
 
 
         <Routes>
@@ -132,14 +135,29 @@ function App() {
 
   onDeleteAllTasks={deleteAllTasks}
 
-  onUpdateTask={async(updatedTask)=>{
+  onUpdateTask={async(taskOrId, updates, silent = false)=>{
 
-  await updateTask(
-    updatedTask.firestoreId || updatedTask.id,
-    updatedTask
-  );
+    // Reminder update
+    if (typeof taskOrId === "string") {
 
-  setEditingTask(null);
+        await updateTask(
+            taskOrId,
+            updates,
+            silent
+        );
+
+        return;
+
+    }
+
+
+    // Normal edit update
+    await updateTask(
+        taskOrId.firestoreId || taskOrId.id,
+        taskOrId
+    );
+
+    setEditingTask(null);
 
 }}
 
