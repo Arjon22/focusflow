@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
@@ -10,6 +11,7 @@ import Settings from "./pages/Settings";
 import Navbar from "./components/Navbar";
 import Leaves from "./components/Leaves";
 import ReminderChecker from "./components/ReminderChecker";
+import LoadingScreen from "./components/LoadingScreen";
 
 import useTasks from "./hooks/useTasks";
 
@@ -43,18 +45,42 @@ function App() {
 
 
   if (loading) {
-    return (
-      <div className="loading-screen">
-        <h2>Loading...</h2>
-      </div>
-    );
-  }
+  return <LoadingScreen />;
+}
 
 
 
   return (
 
     <BrowserRouter>
+    <Toaster
+  position="top-right"
+  reverseOrder={false}
+  toastOptions={{
+    duration: 2500,
+    style: {
+      borderRadius: "14px",
+      background: "#ffffff",
+      color: "#222",
+      boxShadow: "0 10px 25px rgba(0,0,0,.12)",
+      padding: "14px 18px",
+      fontSize: "15px",
+      fontWeight: "500",
+    },
+    success: {
+      iconTheme: {
+        primary: "#4CAF50",
+        secondary: "#fff",
+      },
+    },
+    error: {
+      iconTheme: {
+        primary: "#F44336",
+        secondary: "#fff",
+      },
+    },
+  }}
+/>
 
       <Leaves />
 

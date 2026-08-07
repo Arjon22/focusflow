@@ -133,3 +133,25 @@ body {
         padding: 20px 15px;
     }
 }
+
+.loading-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.loading-logo {
+    font-size: 50px;
+}
+
+.loading-screen h2 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.loading-screen p {
+    opacity: .7;
+}
