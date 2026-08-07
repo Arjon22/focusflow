@@ -1,3 +1,6 @@
+import { motion } from "framer-motion";
+import { useState } from "react";
+import ConfirmModal from "./ConfirmModal";
 const getTaskStatus = (dueDate) => {
   if (!dueDate) return null;
 
@@ -54,7 +57,7 @@ function TaskList({
   onEditTask,
   onDeleteTask,
 }) {
-
+const [deleteTaskId, setDeleteTaskId] = useState(null);
 
   if (tasks.length === 0) {
 
@@ -75,6 +78,7 @@ function TaskList({
         <p>
           Add your first task and start focusing.
         </p>
+        
 
 
       </div>
@@ -100,21 +104,19 @@ function TaskList({
 
         return (
 
-          <li
-
-            key={
-              task.firestoreId || task.id
-            }
-
-            className={
-              `task-card ${
-                task.completed
-                  ? "completed"
-                  : ""
-              } fade-in`
-            }
-
-          >
+          <motion.li
+  layout
+  initial={{ opacity: 0, y: 15, scale: 0.98 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  transition={{
+    duration: 0.25,
+    ease: "easeOut",
+  }}
+  key={task.firestoreId || task.id}
+  className={`task-card ${
+    task.completed ? "completed" : ""
+  } fade-in`}
+>
 
 
 
@@ -239,34 +241,34 @@ function TaskList({
 
 
 
-              <button
+              <motion.button
   type="button"
   className="edit-btn"
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  transition={{ duration: 0.15 }}
   onClick={() => onEditTask(task)}
 >
   Edit
-</button>
+</motion.button>
 
 
 
 
-              <button
+              <motion.button
   type="button"
   className="delete-btn"
-  onClick={() => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete this task?"
-      )
-    ) {
-      onDeleteTask(
-  task.firestoreId || task.id
-);
-    }
-  }}
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  transition={{ duration: 0.15 }}
+  onClick={() =>
+  setDeleteTaskId(
+    task.firestoreId || task.id
+  )
+}
 >
   Delete
-</button>
+</motion.button>
 
 
 
@@ -274,12 +276,36 @@ function TaskList({
 
 
 
-          </li>
+          </motion.li>
 
         );
 
 
       })}
+
+      {deleteTaskId && (
+
+  <ConfirmModal
+
+    title="Delete Task?"
+
+    message="Are you sure you want to delete this task?"
+
+    onCancel={() =>
+      setDeleteTaskId(null)
+    }
+
+    onConfirm={() => {
+
+      onDeleteTask(deleteTaskId);
+
+      setDeleteTaskId(null);
+
+    }}
+
+  />
+
+)}
 
 
     </ul>
