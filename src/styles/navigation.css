@@ -258,3 +258,19 @@
     border: none;
     cursor: pointer;
 }
+
+.sidebar-auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-auth-buttons button {
+    width: 100%;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.register-btn {
+    font-weight: 500;
+}

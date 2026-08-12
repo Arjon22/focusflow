@@ -1,24 +1,17 @@
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/useAuth";
 
-import { auth } from "../firebase/auth";
-
-import {
-    getTasks,
-    addTask,
-    updateTask,
-    deleteTask,
-    deleteAllTasks,
-} from "../firebase/tasks";
 const normalizeTask = (task) => {
-
     const createdAt =
         task.createdAt ||
         new Date().toISOString();
 
     return {
         ...task,
+
+        id: task.id ||
+            Date.now().toString(),
 
         priority: task.priority || "medium",
 
@@ -41,422 +34,268 @@ const normalizeTask = (task) => {
         updatedAt: task.updatedAt ||
             createdAt,
     };
-
 };
+
+
+// ========================
+// Get Tasks From LocalStorage
+// ========================
+
+const getTasksFromStorage = (userId) => {
+    if (!userId) {
+        return [];
+    }
+
+    const key =
+        `focusflow_tasks_${userId}`;
+
+    const saved =
+        localStorage.getItem(key);
+
+    if (!saved) {
+        return [];
+    }
+
+    try {
+        const parsed =
+            JSON.parse(saved);
+
+        return parsed.map(normalizeTask);
+
+    } catch (error) {
+        console.error(
+            "Failed to parse tasks:",
+            error
+        );
+
+        return [];
+    }
+};
+
+
+// ========================
+// Hook
+// ========================
 
 export default function useTasks() {
 
-    const [user, setUser] = useState(null);
-    const [tasks, setTasks] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
+
+    const [tasks, setTasks] =
+    useState(() =>
+        getTasksFromStorage(
+            user && user.id
+        )
+    );
 
 
-    // ------------------------
-    // Local Storage Helpers
-    // ------------------------
+    // ========================
+    // Save Tasks
+    // ========================
 
-    const loadGuestTasks = () => {
-        const saved = localStorage.getItem("guestTasks");
+    const saveTasks = (newTasks) => {
 
-        if (saved) {
-            setTasks(JSON.parse(saved).map(normalizeTask));
-        } else {
-            setTasks([]);
+        if (!user) {
+            return;
         }
-    };
 
+        const key =
+            `focusflow_tasks_${user.id}`;
 
-    const saveGuestTasks = (newTasks) => {
         localStorage.setItem(
-            "guestTasks",
+            key,
             JSON.stringify(newTasks)
         );
     };
 
 
-    // ------------------------
-    // Load Firestore Tasks
-    // ------------------------
+    // ========================
+    // Add Task
+    // ========================
 
-    const loadTasks = async(uid) => {
+    const createTask = (task) => {
 
-        setLoading(true);
-
-        try {
-
-            const data = await getTasks(uid);
-
-            setTasks(data.map(normalizeTask));
-
-        } catch (err) {
-
-            console.error(
-                "Failed to load tasks:",
-                err
+        if (!user) {
+            toast.error(
+                "Please sign in first."
             );
 
+            return;
         }
 
-        setLoading(false);
+        const now =
+            new Date().toISOString();
+
+        const newTask =
+            normalizeTask({
+
+                ...task,
+
+                id: Date.now().toString(),
+
+                createdAt: task.createdAt ||
+                    now,
+
+                updatedAt: now,
+            });
+
+
+        setTasks((prev) => {
+
+            const updated = [
+                ...prev,
+                newTask,
+            ];
+
+            saveTasks(updated);
+
+            return updated;
+        });
+
+
+        toast.success(
+            "Task added."
+        );
     };
 
 
+    // ========================
+    // Update Task
+    // ========================
 
-    // ------------------------
-    // Auth Listener
-    // ------------------------
+    const editTask = (
+        id,
+        updates,
+        silent = false
+    ) => {
 
-    useEffect(() => {
-
-        const unsubscribe =
-            onAuthStateChanged(
-                auth,
-                async(currentUser) => {
-
-                    setUser(currentUser);
-
-
-                    if (currentUser) {
-
-                        const guestTasks =
-                            JSON.parse(
-                                localStorage.getItem("guestTasks") || "[]"
-                            );
-
-                        if (guestTasks.length > 0) {
-
-                            const existingTasks =
-                                await getTasks(currentUser.uid);
-
-                            for (const task of guestTasks) {
-
-                                const alreadyExists =
-                                    existingTasks.some(
-                                        (existing) =>
-                                        (existing.title || "").trim().toLowerCase() ===
-                                        (task.title || "").trim().toLowerCase()
-                                    );
-
-                                if (!alreadyExists) {
-
-                                    await addTask(
-                                        currentUser.uid, {
-                                            title: task.title,
-                                            priority: task.priority,
-                                            dueDate: task.dueDate,
-                                            dueTime: task.dueTime,
-                                            reminder: task.reminder,
-                                            repeat: task.repeat,
-                                            notes: task.notes,
-                                            completed: task.completed,
-                                        }
-                                    );
-
-                                }
-
-                            }
-
-                            localStorage.removeItem("guestTasks");
-
-                        }
-
-                        await loadTasks(currentUser.uid);
-
-                    } else {
-
-                        loadGuestTasks();
-
-                        setLoading(false);
-
-                    }
-
-                }
-            );
-
-
-        return unsubscribe;
-
-    }, []);
-
-
-
-    // ------------------------
-    // Add Task
-    // ------------------------
-
-    const createTask = async(task) => {
-
-
-        // Guest Mode
         if (!user) {
-
-            const guestTask = normalizeTask({
-                ...task,
-                id: Date.now(),
-                firestoreId: null,
-            });
-
-            setTasks((prev) => {
-
-                const updated = [
-                    ...prev,
-                    guestTask
-                ];
-
-                saveGuestTasks(updated);
-
-                return updated;
-
-            });
-
-            toast.success("Task added.");
-
             return;
-
         }
 
 
+        setTasks((prev) => {
 
-        // Logged User
+            const updated =
+                prev.map((task) => {
 
-        try {
+                    if (task.id !== id) {
+                        return task;
+                    }
 
-            const id =
-                await addTask(
-                    user.uid,
-                    task
+                    return {
+                        ...task,
+                        ...updates,
+                        updatedAt: new Date().toISOString(),
+                    };
+                });
+
+
+            saveTasks(updated);
+
+            return updated;
+        });
+
+
+        if (!silent) {
+            toast.success(
+                "Task updated."
+            );
+        }
+    };
+
+
+    // ========================
+    // Delete Task
+    // ========================
+
+    const removeTask = (id) => {
+
+        if (!user) {
+            return;
+        }
+
+
+        setTasks((prev) => {
+
+            const updated =
+                prev.filter(
+                    (task) =>
+                    task.id !== id
                 );
 
 
-            setTasks((prev) => [
+            saveTasks(updated);
 
-                ...prev,
-
-                normalizeTask({
-                    ...task,
-                    firestoreId: id,
-                })
-
-            ]);
-            toast.success("Task added.");
+            return updated;
+        });
 
 
-        } catch (err) {
-
-            console.error(err);
-            toast.error("Failed to add task.");
-
-        }
-
+        toast.success(
+            "Task deleted."
+        );
     };
 
 
+    // ========================
+    // Delete All Tasks
+    // ========================
 
-    // ------------------------
-    // Update Task
-    // ------------------------
-
-    const editTask = async(id, updates, silent = false) => {
-
+    const removeAllTasks = () => {
 
         if (!user) {
-
-            setTasks((prev) => {
-
-                const updated =
-                    prev.map(task =>
-
-                        task.id === id
-
-                        ?
-                        {
-                            ...task,
-                            ...updates
-                        }
-
-                        :
-                        task
-
-                    );
-
-
-                saveGuestTasks(updated);
-                if (!silent) {
-                    toast.success("Task updated.");
-                }
-
-                return updated;
-
-            });
-
-
             return;
-
         }
 
 
-
-        try {
-
-            await updateTask(
-                id,
-                updates
-            );
+        const key =
+            `focusflow_tasks_${user.id}`;
 
 
-            setTasks((prev) =>
+        localStorage.removeItem(key);
 
-                prev.map(task =>
-
-                    task.firestoreId === id
-
-                    ?
-                    {
-                        ...task,
-                        ...updates
-                    }
-
-                    :
-                    task
-
-                )
-
-            );
-            if (!silent) {
-                toast.success("Task updated.");
-            }
+        setTasks([]);
 
 
-        } catch (err) {
-
-            console.error(err);
-            toast.error("Failed to update task.");
-
-        }
-
+        toast.success(
+            "All tasks deleted."
+        );
     };
 
 
+    // ========================
+    // Toggle Task
+    // ========================
 
-    // ------------------------
-    // Delete Task
-    // ------------------------
+    const toggleTask = (task) => {
 
-    const removeTask = async(id) => {
-
-
-        if (!user) {
-
-
-            setTasks((prev) => {
-
-                const updated =
-                    prev.filter(
-                        task =>
-                        task.id !== id
-                    );
-
-
-                saveGuestTasks(updated);
-
-                return updated;
-
-            });
-
-
-            return;
-
-        }
-
-
-
-        try {
-
-            await deleteTask(id);
-
-            setTasks((prev) =>
-                prev.filter(
-                    (task) => task.firestoreId !== id
-                )
-            );
-
-            toast.success("Task deleted.");
-
-        } catch (err) {
-
-            console.error(err);
-
-            toast.error("Failed to delete task.");
-
-        }
-
-    };
-
-
-
-    // ------------------------
-    // Delete All
-    // ------------------------
-
-    const removeAllTasks = async() => {
-
-
-        if (!user) {
-
-            setTasks([]);
-
-            localStorage.removeItem(
-                "guestTasks"
-            );
-            toast.success("All tasks deleted.");
-
-            return;
-
-        }
-
-
-        try {
-
-            await deleteAllTasks(
-                user.uid
-            );
-
-            setTasks([]);
-            toast.success("All tasks deleted.");
-
-
-        } catch (err) {
-
-            console.error(err);
-            toast.error("Failed to delete all tasks.");
-
-        }
-
-    };
-
-
-
-    // ------------------------
-    // Toggle Complete
-    // ------------------------
-
-    const toggleTask = async(task) => {
-
-
-        await editTask(
-
-            task.firestoreId || task.id,
-
-            {
+        editTask(
+            task.id, {
                 completed:
                     !task.completed,
             }
-
         );
-
     };
 
 
+    // ========================
+    // Refresh
+    // ========================
+
+    const refresh = () => {
+
+        const loadedTasks =
+            getTasksFromStorage(
+                user && user.id
+            );
+
+        setTasks(loadedTasks);
+    };
+
+
+    // ========================
+    // Return
+    // ========================
 
     return {
 
@@ -464,8 +303,7 @@ export default function useTasks() {
 
         tasks,
 
-        loading,
-
+        loading: false,
 
         addTask: createTask,
 
@@ -477,23 +315,6 @@ export default function useTasks() {
 
         toggleTask,
 
-
-        refresh: () => {
-
-            if (user) {
-
-                loadTasks(
-                    user.uid
-                );
-
-            } else {
-
-                loadGuestTasks();
-
-            }
-
-        }
-
+        refresh,
     };
-
 }
