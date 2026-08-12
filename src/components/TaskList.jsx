@@ -113,7 +113,7 @@ const [deleteTaskId, setDeleteTaskId] = useState(null);
     duration: 0.25,
     ease: "easeOut",
   }}
-  key={task.firestoreId || task.id}
+  key={task.id}
   className={`task-card ${
     task.completed ? "completed" : ""
   } fade-in`}
@@ -269,9 +269,7 @@ const [deleteTaskId, setDeleteTaskId] = useState(null);
   whileTap={{ scale: 0.95 }}
   transition={{ duration: 0.15 }}
   onClick={() =>
-  setDeleteTaskId(
-    task.firestoreId || task.id
-  )
+    setDeleteTaskId(task.id)
 }
 >
   Delete

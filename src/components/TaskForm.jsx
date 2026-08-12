@@ -93,10 +93,11 @@ function TaskForm({
 
     if (!task.trim()) return;
     const duplicate = allTasks.some(
-  (item) =>
-    item.title?.trim().toLowerCase() === task.trim().toLowerCase()
-    &&
-    item.firestoreId !== editingTask?.firestoreId
+    (item) =>
+        item.title?.trim().toLowerCase() ===
+        task.trim().toLowerCase()
+        &&
+        item.id !== editingTask?.id
 );
 
 
