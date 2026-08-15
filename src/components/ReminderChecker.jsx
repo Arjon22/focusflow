@@ -56,8 +56,7 @@ function ReminderChecker({ tasks, onReminderUpdate }) {
                 if (isReminderDue(task)) {
 
 
-                    const taskId =
-                        task.firestoreId || task.id;
+                    const taskId = task.id;
 
 
 
