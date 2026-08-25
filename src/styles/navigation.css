@@ -1,0 +1,276 @@
+/* ==========================
+   DESKTOP SIDEBAR
+========================== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(0, 0, 0, .08);
+    padding: 28px 20px;
+    z-index: 1000;
+}
+
+
+/* ==========================
+   LOGO
+========================== */
+
+.sidebar-logo {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 40px;
+}
+
+
+/* ==========================
+   NAV LINKS
+========================== */
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--text);
+    padding: 14px 16px;
+    border-radius: 16px;
+    font-size: 16px;
+    transition: all .25s ease;
+    margin-bottom: 8px;
+}
+
+.sidebar a:hover {
+    background: rgba(46, 125, 50, .10);
+    transform: translateX(4px);
+}
+
+.sidebar a.active {
+    background: var(--primary);
+    color: white;
+}
+
+
+/* ==========================
+   MOBILE NAVBAR
+========================== */
+
+.mobile-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: rgba(255, 255, 255, .95);
+    backdrop-filter: blur(18px);
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, .08);
+    z-index: 1000;
+}
+
+.mobile-navbar a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 24px;
+}
+
+.mobile-navbar a.active {
+    color: var(--primary);
+}
+
+
+/* ==========================
+   DESKTOP CONTENT SHIFT
+========================== */
+
+@media (min-width: 701px) {
+    .main-content {
+        margin-left: 260px;
+        width: calc(100% - 260px);
+    }
+}
+
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width:700px) {
+    .sidebar {
+        display: none;
+    }
+    .mobile-navbar {
+        display: flex;
+    }
+    .home-page,
+    .dashboard,
+    .tasks-page,
+    .calendar-page,
+    .settings-page {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+
+/* ==========================
+   ACCOUNT SECTION
+========================== */
+
+.sidebar-account {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.user-photo {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-info strong {
+    color: white;
+    font-size: 14px;
+}
+
+.user-info small {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.login-btn,
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.login-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.logout-btn {
+    background: #ef5350;
+    color: white;
+}
+
+.login-btn:hover,
+.logout-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* Hide mobile floating account button on desktop */
+
+.mobile-account {
+    display: none;
+}
+
+
+/* Show only on mobile */
+
+@media (max-width: 600px) {
+    .mobile-account {
+        display: block;
+    }
+}
+
+.mobile-account {
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    z-index: 1000;
+}
+
+.account-float-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    background: white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.account-float-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.account-popup {
+    position: absolute;
+    right: 0;
+    bottom: 65px;
+    width: 220px;
+    padding: 15px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.popup-user {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.account-popup button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.sidebar-auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-auth-buttons button {
+    width: 100%;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.register-btn {
+    font-weight: 500;
+}
