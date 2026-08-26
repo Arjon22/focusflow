@@ -3,13 +3,13 @@ import {
     useState,
 } from "react";
 
+import {
+    registerUser,
+    loginUser,
+} from "../services/api";
+
+
 const AuthContext = createContext();
-
-const USERS_KEY =
-    "focusflow_users";
-
-const CURRENT_USER_KEY =
-    "focusflow_current_user";
 
 
 // ========================
@@ -19,8 +19,8 @@ const CURRENT_USER_KEY =
 const getSavedUser = () => {
 
     const savedUser =
-        localStorage.getItem(
-            CURRENT_USER_KEY
+        sessionStorage.getItem(
+            "focusflow_current_user"
         );
 
     if (!savedUser) {
@@ -29,9 +29,7 @@ const getSavedUser = () => {
 
     try {
 
-        return JSON.parse(
-            savedUser
-        );
+        return JSON.parse(savedUser);
 
     } catch (error) {
 
@@ -40,8 +38,8 @@ const getSavedUser = () => {
             error
         );
 
-        localStorage.removeItem(
-            CURRENT_USER_KEY
+        sessionStorage.removeItem(
+            "focusflow_current_user"
         );
 
         return null;
@@ -65,105 +63,80 @@ export function AuthProvider({
     // Register
     // ========================
 
-    const register = (
+    const register = async (
         email,
         password
     ) => {
 
-        const normalizedEmail =
-            email.trim().toLowerCase();
+        try {
+
+            const response =
+                await registerUser(
+                    email,
+                    password
+                );
 
 
-        const savedUsers =
-            JSON.parse(
-                localStorage.getItem(
-                    USERS_KEY
-                ) || "[]"
+            if (
+                response.message ===
+                "Email already registered"
+            ) {
+
+                return {
+                    success: false,
+                    message:
+                        "An account with this email already exists.",
+                };
+            }
+
+
+            const loggedInUser = {
+
+                id:
+                    response.user_id,
+
+                email:
+                    response.email,
+            };
+
+
+            sessionStorage.setItem(
+                "focusflow_current_user",
+                JSON.stringify(
+                    loggedInUser
+                )
             );
 
 
-        const existingUser =
-            savedUsers.find(
-                (existingUser) =>
-                    existingUser.email ===
-                    normalizedEmail
+            setUser(
+                loggedInUser
             );
 
-
-        if (existingUser) {
 
             return {
+
+                success: true,
+
+                user:
+                    loggedInUser,
+            };
+
+        } catch (error) {
+
+            console.error(
+                "Registration failed:",
+                error
+            );
+
+            return {
+
                 success: false,
 
                 message:
-                    "An account with this email already exists.",
+                    error.message ||
+                    "Registration failed.",
             };
         }
-
-
-        const newUser = {
-
-            id:
-                Date.now().toString(),
-
-            email:
-                normalizedEmail,
-
-            password,
-        };
-
-
-        const updatedUsers = [
-
-            ...savedUsers,
-
-            newUser,
-        ];
-
-
-        localStorage.setItem(
-
-            USERS_KEY,
-
-            JSON.stringify(
-                updatedUsers
-            )
-        );
-
-
-        // Automatically login
-        const loggedInUser = {
-
-            id:
-                newUser.id,
-
-            email:
-                newUser.email,
-        };
-
-
-        localStorage.setItem(
-
-            CURRENT_USER_KEY,
-
-            JSON.stringify(
-                loggedInUser
-            )
-        );
-
-
-        setUser(
-            loggedInUser
-        );
-
-
-        return {
-
-            success: true,
-
-            user:
-                loggedInUser,
-        };
     };
 
 
@@ -171,79 +144,82 @@ export function AuthProvider({
     // Login
     // ========================
 
-    const login = (
+    const login = async (
         email,
         password
     ) => {
 
-        const normalizedEmail =
-            email.trim().toLowerCase();
+        try {
+
+            const response =
+                await loginUser(
+                    email,
+                    password
+                );
 
 
-        const savedUsers =
-            JSON.parse(
-                localStorage.getItem(
-                    USERS_KEY
-                ) || "[]"
+            if (
+                response.message ===
+                "Invalid email or password"
+            ) {
+
+                return {
+
+                    success: false,
+
+                    message:
+                        "Invalid email or password.",
+                };
+            }
+
+
+            const loggedInUser = {
+
+                id:
+                    response.user_id,
+
+                email:
+                    response.email,
+            };
+
+
+            sessionStorage.setItem(
+                "focusflow_current_user",
+                JSON.stringify(
+                    loggedInUser
+                )
             );
 
 
-        const existingUser =
-            savedUsers.find(
-                (savedUser) =>
-
-                    savedUser.email ===
-                        normalizedEmail &&
-
-                    savedUser.password ===
-                        password
+            setUser(
+                loggedInUser
             );
 
 
-        if (!existingUser) {
+            return {
+
+                success: true,
+
+                user:
+                    loggedInUser,
+            };
+
+        } catch (error) {
+
+            console.error(
+                "Login failed:",
+                error
+            );
 
             return {
 
                 success: false,
 
                 message:
-                    "Invalid email or password.",
+                    error.message ||
+                    "Login failed.",
             };
         }
-
-
-        const loggedInUser = {
-
-            id:
-                existingUser.id,
-
-            email:
-                existingUser.email,
-        };
-
-
-        localStorage.setItem(
-
-            CURRENT_USER_KEY,
-
-            JSON.stringify(
-                loggedInUser
-            )
-        );
-
-
-        setUser(
-            loggedInUser
-        );
-
-
-        return {
-
-            success: true,
-
-            user:
-                loggedInUser,
-        };
     };
 
 
@@ -253,8 +229,8 @@ export function AuthProvider({
 
     const logout = () => {
 
-        localStorage.removeItem(
-            CURRENT_USER_KEY
+        sessionStorage.removeItem(
+            "focusflow_current_user"
         );
 
         setUser(null);

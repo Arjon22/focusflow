@@ -31,7 +31,7 @@ function Register() {
         useState("");
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
 
         event.preventDefault();
 
@@ -61,10 +61,10 @@ function Register() {
 
 
         const result =
-            register(
-                email,
-                password
-            );
+    await register(
+        email,
+        password
+    );
 
 
         if (!result.success) {
