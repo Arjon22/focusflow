@@ -1,76 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/useAuth";
 
-const normalizeTask = (task) => {
-    const createdAt =
-        task.createdAt ||
-        new Date().toISOString();
-
-    return {
-        ...task,
-
-        id: task.id ||
-            Date.now().toString(),
-
-        priority: task.priority || "medium",
-
-        dueDate: task.dueDate || "",
-
-        dueTime: task.dueTime || "",
-
-        reminder: task.reminder || "none",
-
-        repeat: task.repeat || "none",
-
-        notes: task.notes || "",
-
-        completed: task.completed || false,
-
-        reminded: task.reminded || false,
-
-        createdAt,
-
-        updatedAt: task.updatedAt ||
-            createdAt,
-    };
-};
-
-
-// ========================
-// Get Tasks From LocalStorage
-// ========================
-
-const getTasksFromStorage = (userId) => {
-    if (!userId) {
-        return [];
-    }
-
-    const key =
-        `focusflow_tasks_${userId}`;
-
-    const saved =
-        localStorage.getItem(key);
-
-    if (!saved) {
-        return [];
-    }
-
-    try {
-        const parsed =
-            JSON.parse(saved);
-
-        return parsed.map(normalizeTask);
-
-    } catch (error) {
-        console.error(
-            "Failed to parse tasks:",
-            error
-        );
-
-        return [];
-    }
-};
+import {
+    getTasks as getTasksFromAPI,
+    createTask as createTaskAPI,
+    updateTask as updateTaskAPI,
+    deleteTask as deleteTaskAPI,
+} from "../services/api";
 
 
 // ========================
@@ -81,41 +18,68 @@ export default function useTasks() {
 
     const { user } = useAuth();
 
-    const [tasks, setTasks] =
-    useState(() =>
-        getTasksFromStorage(
-            user && user.id
-        )
-    );
+    const [tasks, setTasks] = useState([]);
+
+    const [loading, setLoading] = useState(false);
 
 
     // ========================
-    // Save Tasks
+    // Load Tasks
     // ========================
 
-    const saveTasks = (newTasks) => {
+    const refresh = async() => {
 
         if (!user) {
+            setTasks([]);
             return;
         }
 
-        const key =
-            `focusflow_tasks_${user.id}`;
+        try {
 
-        localStorage.setItem(
-            key,
-            JSON.stringify(newTasks)
-        );
+            setLoading(true);
+
+            const loadedTasks =
+                await getTasksFromAPI(user.id);
+
+            setTasks(loadedTasks);
+
+        } catch (error) {
+
+            console.error(
+                "Failed to load tasks:",
+                error
+            );
+
+            toast.error(
+                "Failed to load tasks."
+            );
+
+        } finally {
+
+            setLoading(false);
+        }
     };
+
+
+    // ========================
+    // Load Tasks When User Changes
+    // ========================
+
+    useEffect(() => {
+
+        refresh();
+
+    }, [user && user.id]);
 
 
     // ========================
     // Add Task
     // ========================
 
-    const createTask = (task) => {
+    const addTask = async(task) => {
 
         if (!user) {
+
             toast.error(
                 "Please sign in first."
             );
@@ -123,39 +87,37 @@ export default function useTasks() {
             return;
         }
 
-        const now =
-            new Date().toISOString();
+        try {
 
-        const newTask =
-            normalizeTask({
+            const newTask =
+                await createTaskAPI(
+                    user.id,
+                    task
+                );
 
-                ...task,
-
-                id: Date.now().toString(),
-
-                createdAt: task.createdAt ||
-                    now,
-
-                updatedAt: now,
-            });
-
-
-        setTasks((prev) => {
-
-            const updated = [
+            setTasks((prev) => [
                 ...prev,
                 newTask,
-            ];
+            ]);
 
-            saveTasks(updated);
+            toast.success(
+                "Task added."
+            );
 
-            return updated;
-        });
+            return newTask;
 
+        } catch (error) {
 
-        toast.success(
-            "Task added."
-        );
+            console.error(
+                "Failed to create task:",
+                error
+            );
+
+            toast.error(
+                error.message ||
+                "Failed to add task."
+            );
+        }
     };
 
 
@@ -163,7 +125,7 @@ export default function useTasks() {
     // Update Task
     // ========================
 
-    const editTask = (
+    const updateTask = async(
         id,
         updates,
         silent = false
@@ -173,33 +135,42 @@ export default function useTasks() {
             return;
         }
 
+        try {
 
-        setTasks((prev) => {
+            const updatedTask =
+                await updateTaskAPI(
+                    user.id,
+                    id,
+                    updates
+                );
 
-            const updated =
-                prev.map((task) => {
+            setTasks((prev) =>
+                prev.map((task) =>
+                    task.id === id ?
+                    updatedTask :
+                    task
+                )
+            );
 
-                    if (task.id !== id) {
-                        return task;
-                    }
+            if (!silent) {
 
-                    return {
-                        ...task,
-                        ...updates,
-                        updatedAt: new Date().toISOString(),
-                    };
-                });
+                toast.success(
+                    "Task updated."
+                );
+            }
 
+            return updatedTask;
 
-            saveTasks(updated);
+        } catch (error) {
 
-            return updated;
-        });
+            console.error(
+                "Failed to update task:",
+                error
+            );
 
-
-        if (!silent) {
-            toast.success(
-                "Task updated."
+            toast.error(
+                error.message ||
+                "Failed to update task."
             );
         }
     };
@@ -209,31 +180,42 @@ export default function useTasks() {
     // Delete Task
     // ========================
 
-    const removeTask = (id) => {
+    const deleteTask = async(id) => {
 
         if (!user) {
             return;
         }
 
+        try {
 
-        setTasks((prev) => {
+            await deleteTaskAPI(
+                user.id,
+                id
+            );
 
-            const updated =
+            setTasks((prev) =>
                 prev.filter(
                     (task) =>
                     task.id !== id
-                );
+                )
+            );
 
+            toast.success(
+                "Task deleted."
+            );
 
-            saveTasks(updated);
+        } catch (error) {
 
-            return updated;
-        });
+            console.error(
+                "Failed to delete task:",
+                error
+            );
 
-
-        toast.success(
-            "Task deleted."
-        );
+            toast.error(
+                error.message ||
+                "Failed to delete task."
+            );
+        }
     };
 
 
@@ -241,25 +223,47 @@ export default function useTasks() {
     // Delete All Tasks
     // ========================
 
-    const removeAllTasks = () => {
+    const deleteAllTasks = async() => {
 
         if (!user) {
             return;
         }
 
+        try {
 
-        const key =
-            `focusflow_tasks_${user.id}`;
+            const currentTasks = [
+                ...tasks,
+            ];
 
+            await Promise.all(
+                currentTasks.map(
+                    (task) =>
+                    deleteTaskAPI(
+                        user.id,
+                        task.id
+                    )
+                )
+            );
 
-        localStorage.removeItem(key);
+            setTasks([]);
 
-        setTasks([]);
+            toast.success(
+                "All tasks deleted."
+            );
 
+        } catch (error) {
 
-        toast.success(
-            "All tasks deleted."
-        );
+            console.error(
+                "Failed to delete all tasks:",
+                error
+            );
+
+            toast.error(
+                "Failed to delete all tasks."
+            );
+
+            await refresh();
+        }
     };
 
 
@@ -267,29 +271,14 @@ export default function useTasks() {
     // Toggle Task
     // ========================
 
-    const toggleTask = (task) => {
+    const toggleTask = async(task) => {
 
-        editTask(
+        await updateTask(
             task.id, {
                 completed:
                     !task.completed,
             }
         );
-    };
-
-
-    // ========================
-    // Refresh
-    // ========================
-
-    const refresh = () => {
-
-        const loadedTasks =
-            getTasksFromStorage(
-                user && user.id
-            );
-
-        setTasks(loadedTasks);
     };
 
 
@@ -303,15 +292,15 @@ export default function useTasks() {
 
         tasks,
 
-        loading: false,
+        loading,
 
-        addTask: createTask,
+        addTask,
 
-        updateTask: editTask,
+        updateTask,
 
-        deleteTask: removeTask,
+        deleteTask,
 
-        deleteAllTasks: removeAllTasks,
+        deleteAllTasks,
 
         toggleTask,
 

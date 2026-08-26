@@ -12,7 +12,7 @@ function Login() {
     const [password, setPassword] = useState("");
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
 
         event.preventDefault();
 
@@ -26,7 +26,7 @@ function Login() {
 
 
         const result =
-            login(email, password);
+    await login(email, password);
 
 
         if (!result.success) {
